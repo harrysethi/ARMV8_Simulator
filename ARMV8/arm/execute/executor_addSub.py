@@ -8,6 +8,8 @@ Created on Aug 8, 2014
 def execAdd_i32(binary):
     rdKey = int(binary[27:32],2)
     rnKey = int(binary[22:27],2)
+    imm6 = int(binary[16:22],2)
+    
     
 def execAdds_i32(binary):
     rdKey = int(binary[27:32],2)
