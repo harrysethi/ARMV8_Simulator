@@ -11,13 +11,16 @@ def hexToBin(s):
     return binary
 
 def lsl(s,i):
-    s=s[i:len(s)]+'0'*i
+    return s[i:len(s)]+'0'*i
     
 def lsr(s,i):
-    s='0'*i+s[0:len(s)-i]
+   return '0'*i+s[0:len(s)-i]
     
 def asr(s,i):
-    s=s[0]*i+s[0:len(s)-i]
+    return s[0]*i+s[0:len(s)-i]
     
-
+def ror(s,i):
+    for x in range(i):
+        s=s[-1]+s[0:len(s)-1]
+    return s
         

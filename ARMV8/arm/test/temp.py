@@ -1,5 +1,6 @@
-def asr(s,i):
-    s=s[0]*i+s[0:len(s)-i]
+def ror(s,i):
+    for x in range(i):
+        s=s[-1]+s[0:len(s)-1]
     print s
     
-asr("10001",1)
+ror("10001",2)
