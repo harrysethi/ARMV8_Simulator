@@ -4,4 +4,4 @@ def ror(s,i):
     print s
 
 
-print hex(14)
+#print hex(14)

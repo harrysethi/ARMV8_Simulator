@@ -50,3 +50,9 @@ def logical_and(s1,s2):
             else:
                 to_return+='1'
     return to_return
+
+def setInstrFlag():
+    const.FLAG_INST_EXECUTED="1"
+
+def resetInstrFlag():
+    const.FLAG_INST_EXECUTED="0"

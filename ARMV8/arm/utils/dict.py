@@ -6,6 +6,20 @@ Created on Aug 8, 2014
 from arm.execute import executor_addSub, executor_move, executor_shift
 from arm.execute import executor_logical
 
+def INSTRUCTION_TYPE(binary,i):
+    try:
+        return {
+            0 : ADD_SUB_IMMEDIATE,
+            1 : MOVE_IMMEDIATE,
+            2 : ADD_SUB_EXT_REG,
+            3 : ADD_SUB_SHIFT_REG,
+            4 : LOGICAL_SHIFT_REG,
+            5 : SHIFT_REGISTER,
+            6 : LOGICAL_IMMEDIATE,
+        }[i](binary)
+    except KeyError:
+        i=i
+
 def ADD_SUB_IMMEDIATE(binary):
     key = binary[0:8] 
     return {
@@ -54,9 +68,7 @@ def LOGICAL_IMMEDIATE(binary):
     }[key](binary)
     
 def LOGICAL_SHIFT_REG(binary):
-
     key = binary[0:8]+"--"+binary[10]
-
     return {
        "00001010--0" : executor_logical.execAnd_sr32,
        "10001010--0" : executor_logical.execAnd_sr64,
