@@ -7,7 +7,7 @@ from armv8.utils import const
 from armv8.utils.mem import regFile
 
 def execMov_i(binary):
-    rdKey = int(binary[26:32],2)
+    rdKey = int(binary[27:32],2)
     imm16 = binary[11:27].zfill(const.REG_SIZE)
     del regFile[rdKey]
     regFile.insert(rdKey,imm16)
