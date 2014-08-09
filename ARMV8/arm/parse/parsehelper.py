@@ -1,7 +1,7 @@
 '''
 Created on 08-Aug-2014
 
-@author: root/abhishek.l1
+@author: root/abhiagar90@gmail.com
 '''
 import sys
 from elftools.elf.elffile import ELFFile
