@@ -3,11 +3,11 @@ Created on Aug 8, 2014
 
 @author: harinder
 '''
-from arm.execute import executor_addSub, executor_move
+from arm.execute import executor_addSub, executor_move, executor_shift
 from arm.execute import executor_logical
 
 def ADD_SUB_IMMEDIATE(binary):
-    key = binary[0:9] 
+    key = binary[0:8] 
     return {
        "00010001" : executor_addSub.execAdd_i32,
        "00110001" : executor_addSub.execAdds_i32,
@@ -20,7 +20,7 @@ def ADD_SUB_IMMEDIATE(binary):
     }[key](binary)
       
 def ADD_SUB_SHIFT_REG(binary):
-    key = binary[0:9]
+    key = binary[0:8]
     return {
        "00001011" : executor_addSub.execAdd_sr32,
        "00101011" : executor_addSub.execAdds_sr32,
@@ -33,7 +33,7 @@ def ADD_SUB_SHIFT_REG(binary):
     }[key](binary)
     
 def ADD_SUB_EXT_REG(binary):
-    key = binary[0:12]
+    key = binary[0:11]
     return {
        "00001011001" : executor_addSub.execAdd_er32,
        "00101011001" : executor_addSub.execAdds_er32,
@@ -47,14 +47,14 @@ def ADD_SUB_EXT_REG(binary):
     
     
 def LOGICAL_IMMEDIATE(binary):
-    key = binary[0:10]
+    key = binary[0:9]
     return {
        "000100100" : executor_logical.execAnd_i32,
        "100100100" : executor_logical.execAnd_i64,
     }[key](binary)
     
 def LOGICAL_SHIFT_REG(binary):
-    key = binary[0:9]+'--'+binary[11]
+    key = binary[0:8]+"--"+binary[10]
     return {
        "00001010--0" : executor_logical.execAnd_sr32,
        "10001010--0" : executor_logical.execAnd_sr64,
@@ -64,11 +64,23 @@ def LOGICAL_SHIFT_REG(binary):
 def MOVE_IMMEDIATE(binary):
     key = binary[0:9]
     return {
-       "000100101" : executor_move.execMov_i,
-       "100100101" : executor_move.execMov_i,
-       "010100101" : executor_move.execMov_i,
-       "110100101" : executor_move.execMov_i,
+       "000100101" : executor_move.execMov_iwi32,
+       "100100101" : executor_move.execMov_iwi64,
+       "010100101" : executor_move.execMov_wi32,
+       "110100101" : executor_move.execMov_wi64,
        "001100100" : executor_move.execMov_bmi32,
        "101100100" : executor_move.execMov_bmi64,
+    }[key](binary)
+    
+        
+def SHIFT_REGISTER(binary):
+    key = binary[0:11]+"-"*5+binary[16:22]
+    return {
+       "00011010110-----001010" : executor_shift.execAsr_r32,
+       "10011010110-----001010" : executor_shift.execAsr_r64,
+       "00011010110-----001000" : executor_shift.execLsl_r32,
+       "10011010110-----001000" : executor_shift.execLsl_r64,
+       "00011010110-----001001" : executor_shift.execLsr_r32,
+       "10011010110-----001001" : executor_shift.execLsr_r64,
     }[key](binary)
     
