@@ -7,6 +7,8 @@ Created on Aug 8, 2014
 
 def execAsr_r32(binary):
     rdKey = int(binary[27:32],2)
+    rnKey = int(binary[22:27],2)
+    rmkey = int(binary[11:16],2)
     imm16 = binary[11:27].zfill(const.REG_SIZE)
     del regFile[rdKey]
     regFile.insert(rdKey,imm16)

@@ -16,8 +16,7 @@ def execAnd_i64(binary):
     rdKey = int(binary[27:32],2)
     rnKey = int(binary[22:27],2)
     
-def execAnd_sr32(binary):
-    
+def execAnd_sr32(binary):    
     rdKey=getRegKeyByStringKey(binary[27:32])
     rnValue = getRegValueByStringkey(binary[22:27])
     immvalue = int(binary[16:22],2) #amount
