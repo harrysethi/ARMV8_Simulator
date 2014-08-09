@@ -1,0 +1,28 @@
+'''
+Created on Aug 8, 2014
+
+@author: harinder
+'''
+
+from armv8.utils.mem import regFile
+from armv8.execute import decoder
+
+if __name__ == '__main__':
+        filename = sys.argv[1]        
+        process3(filename)
+        hexes=return_correct_text(filename)
+        print "Inside Main"
+        #hexCode = "52800141" 
+        for hexcode in hexes:
+        	decoder.decodeInstr(hexCode) 
+        for x in regFile:
+            print x
+        
+def main():
+    print "Inside Main"
+    hexCode = "52800141"   
+    decoder.decodeInstr(hexCode) 
+    for x in regFile:
+        print x
+        
+#main()
