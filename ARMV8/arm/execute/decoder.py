@@ -7,4 +7,4 @@ from arm.utils import dict, utilFunc
 
 def decodeInstr(hexCode): 
     binary = utilFunc.hexToBin(hexCode)
-    dict.MOVE_IMMEDIATE(binary)
+    dict.LOGICAL_SHIFT_REG(binary)

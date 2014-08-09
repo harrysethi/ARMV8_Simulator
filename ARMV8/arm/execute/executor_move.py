@@ -3,8 +3,8 @@ Created on Aug 8, 2014
 
 @author: harinder
 '''
-from armv8.utils import const
-from armv8.utils.mem import regFile
+from arm.utils import const
+from arm.utils.mem import regFile
 
 def execMov_i(binary):
     rdKey = int(binary[27:32],2)

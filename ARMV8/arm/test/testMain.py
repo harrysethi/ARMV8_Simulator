@@ -9,6 +9,7 @@ from arm.execute import decoder
 from arm.parse import parsehelper
 import sys
 
+'''
 if __name__ == '__main__':
         #filename = sys.argv[1]
         filename='/home/harinder/Desktop/testcase4_mov/a.out'     
@@ -20,13 +21,13 @@ if __name__ == '__main__':
         for hexcode in hexes:
         	decoder.decodeInstr(hexcode) 
         for x in regFile:
-            print x
+            print x'''
         
 def main():
     print "Inside Main"
-    hexCode = "52800141"   
+    hexCode = "0a020020"   
     decoder.decodeInstr(hexCode) 
     for x in regFile:
         print x
         
-#main()
+main()

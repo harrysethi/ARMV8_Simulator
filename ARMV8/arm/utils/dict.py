@@ -54,7 +54,7 @@ def LOGICAL_IMMEDIATE(binary):
     }[key](binary)
     
 def LOGICAL_SHIFT_REG(binary):
-    key = binary[0:9]+'--'+binary[11]
+    key = binary[0:8]+'--'+binary[11]
     return {
        "00001010--0" : executor_logical.execAnd_sr32,
        "10001010--0" : executor_logical.execAnd_sr64,
