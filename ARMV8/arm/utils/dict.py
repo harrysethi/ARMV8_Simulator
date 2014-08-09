@@ -47,7 +47,7 @@ def ADD_SUB_EXT_REG(binary):
     
     
 def LOGICAL_IMMEDIATE(binary):
-    key = binary[0:11]
+    key = binary[0:10]
     return {
        "000100100" : executor_logical.execAnd_i32,
        "100100100" : executor_logical.execAnd_i64,

@@ -29,3 +29,5 @@ MOV={ 1 : pr,
 
 MOV[0]()
 
+print bin(-2)[2:].zfill(32)
+
