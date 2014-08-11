@@ -8,6 +8,7 @@ from arm.utils.mem import regFile
 from arm.execute import decoder
 from arm.parse import parsehelper
 import sys
+from arm.utils.utilFunc import resetInstrFlag
 
 if __name__ == '__main__':
         #filename = sys.argv[1]
@@ -18,17 +19,7 @@ if __name__ == '__main__':
         print "Inside Main"
         #hexCode = "52800141" 
         for hexcode in hexes:
-        	decoder.decodeInstr(hexcode) 
+            resetInstrFlag()
+            decoder.decodeInstr(hexcode)        	 
         for x in regFile:
             print x
-
-
-        
-def main():
-    print "Inside Main"
-    hexCode = "0a020020"   
-    decoder.decodeInstr(hexCode) 
-    for x in regFile:
-        print x
-        
-#main()
