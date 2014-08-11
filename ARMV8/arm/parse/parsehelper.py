@@ -18,6 +18,8 @@ from elftools.elf.descriptions import (
 from elftools.common.py3compat import (
         ifilter, byte2int, bytes2str, itervalues, str2bytes)
 
+addReturn=''
+numOfInst=0
 
 def process_file(filename):
     with open(filename, 'rb') as f:
@@ -145,6 +147,7 @@ def process3(filename):
         ##assuming no reloaction section for now
         #self._note_relocs_for_section(section)
         addr = section['sh_addr']
+        #print addr
         data = section.data()
         dataptr = 0
 
@@ -201,6 +204,8 @@ def return_parsed_text_section(filename):
         addr = section['sh_addr']
         data = section.data()
         dataptr = 0
+        
+        setStartAddress('  %s ' % _format_hex(addr, elffile, fieldsize=8 ))
 
         toreturn=[]
         while dataptr < len(data):
@@ -243,6 +248,7 @@ def return_parsed_text_section(filename):
             toreturn.append('')
         #print toreturn        
         finalreturn= arrangeData(toreturn, isLittleEndian(elffile))
+        setNumOfInst(len(finalreturn))
         return finalreturn
             
 
@@ -278,9 +284,28 @@ def arrangeData(list,littleEndian):
     return toreturn
 
 
+def setStartAddress(add):
+    global addReturn
+    addReturn=add
+    
+def getStartAddress():
+    return addReturn
+    
+def getNumOfInst():
+    return numOfInst
+    
+def setNumOfInst(num):
+    global numOfInst
+    numOfInst =  num
+    
+def getNumOfBytes():
+    return getNumOfInst()*4
 
 #assuming if called from arg line then pass file name as pass a file name from the calling method
 if __name__ == '__main__':
         filename = sys.argv[1]        
         process3(filename)
         print return_parsed_text_section(filename)
+        print getStartAddress()
+        print getNumOfInst()
+        print getNumOfBytes()
