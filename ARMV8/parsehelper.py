@@ -259,7 +259,7 @@ def isLittleEndian(elffile):
         
         #ELF Data Type Endian and complement
         data=describe_ei_data(e_ident['EI_DATA'])
-        print data
+        #print data
         #print e_ident['EI_DATA']
         return data.find('little')!=-1 
         #print'\n'

@@ -3,9 +3,8 @@ Created on Aug 8, 2014
 
 @author: harinder
 '''
-from arm.utils import const
-from arm.utils import utilFunc
-from arm.utils.utilFunc import binaryToHexStr
+import const
+import utilFunc
 
 
 def execMov_iwi32(binary):
@@ -29,7 +28,7 @@ def mov_imm(binary, instr, inverted, N):
     result = (imm16+'0'*pos).zfill(N)
     if(inverted == '1'):
         result = utilFunc.negate(result)
-    instr = instr + str(rdKey)+", #"+binaryToHexStr(result)
+    instr = instr + str(rdKey)+", #"+utilFunc.binaryToHexStr(result)
     utilFunc.finalize(rdKey, result.zfill(const.REG_SIZE), instr)
                        
 def execMov_bmi32(binary):

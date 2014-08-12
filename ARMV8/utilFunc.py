@@ -3,8 +3,8 @@ Created on Aug 8, 2014
 
 @author: harinder
 '''
-from arm.utils import const
-from arm.utils.mem import regFile, flagFile
+import const
+from mem import regFile, flagFile
 
 def hexToBin(s):
     scale = 16 ## equals to hexadecimal    

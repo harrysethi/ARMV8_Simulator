@@ -3,11 +3,10 @@ Created on Aug 8, 2014
 
 @author: harinder
 '''
-from arm.utils.utilFunc import *
 
-from arm.utils import const
-from arm.utils.mem import regFile
-from elftools.construct.lib import hex
+from utilFunc import getRegKeyByStringKey, getRegValueByStringkey, lsl, lsr, asr, ror, logical_and, finalize
+
+import const
 
 def execAnd_i32(binary):
     rdKey = int(binary[27:32],2)

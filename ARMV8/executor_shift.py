@@ -4,9 +4,11 @@ Created on Aug 8, 2014
 @author: harinder
 '''
 
-from arm.utils.mem import regFile
-from arm.utils import utilFunc
-from arm.utils.utilFunc import finalize
+
+import utilFunc
+from mem import regFile
+from utilFunc import finalize
+
 
 #Helper function
 def getFields_r(binary):

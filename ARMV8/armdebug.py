@@ -4,12 +4,11 @@ Created on 11-Aug-2014
 @author: abhiagar90@gmail.com
 '''
 
-from arm.parse import parsehelper
-from arm.parse.parsehelper import getStartAddress
-from arm.utils.utilFunc import resetInstrFlag
-from arm.execute import decoder
 import re
-from arm.utils.mem import regFile
+import parsehelper
+import utilFunc
+import decoder
+import mem
 
 DEBUG_MODE=False
 PC = 0
@@ -85,7 +84,7 @@ def initBkPoint():
     global bkpoint
     length=parsehelper.getNumOfInst()
     bkpoint= [False for x in range(length)]
-    print bkpoint
+    #print bkpoint
     
 def putBkPoint(givenHexString):
     num=-1
@@ -123,11 +122,15 @@ def isBkPointHex(givenHexString): #assume the hex is within limits and right alw
 def startInteraction():
     flag = True
     initBkPoint()
-    setPC(int(getStartAddress(),16))
-    print getPC()
-    print getCurrentInstNumber()
-    print '---Debug mode started---\n'
+    setPC(int(parsehelper.getStartAddress(),16))
+    #print getPC()
+    #print getCurrentInstNumber()
+    print '------------------------------------'
+    print 'The starting address is: ' + parsehelper.getStartAddress()
+    print "Debug mode started. Type 'help' for list of options."
     while flag:
+        print '------------------------------------'
+        print 'Type debug commnand here : ',
         x=raw_input()
         x=x.strip().lower()
         if x=='exit':
@@ -136,6 +139,9 @@ def startInteraction():
             parseCommand(x)
 
 def parseCommand(command):
+    if command=='' or command==None:
+        return
+    
     print 'Typed: '+command
     
     if command=='s':
@@ -162,6 +168,18 @@ def parseCommand(command):
         executePrint(command)
         return
     
+    if command == 'flags':
+        executeFlag()
+        return
+    
+    if command == 'regs':
+        executeRegs()
+        return
+    
+    if command == 'help':
+        executeDebuggerHelp()
+        return
+    
     else:
         print 'Not supported input (yet)!'
     
@@ -175,7 +193,7 @@ def executeS():
 def executeNextInst():
     if getCurrentInstNumber()<len(getHexes()):
         hexcode=hexes[getCurrentInstNumber()]
-        resetInstrFlag()
+        utilFunc.resetInstrFlag()
         decoder.decodeInstr(hexcode)
         incPC()
     else:
@@ -249,8 +267,8 @@ def executeC():
         #print 'X: '+str(x)
         executeNextInst()
         x=getCurrentInstNumber()
-    if (x==len(getHexes())):
         print 'no breakpoints encountered. instructions exhausted!!'
+    if (x==len(getHexes())):
         return 
     print "Arrived at the break point. Type 's' or 'run'..."
     
@@ -290,11 +308,57 @@ def executePrintReg(command): #list of strings in command
     
     if regtype == 'x':
         if regbase == 'd':
-            print 'register value:' + str(int(regFile[regnum],2))
+            binary=mem.regFile[regnum]
+            if binary[0]=='0':
+                print 'register value:' + str(int(binary,2))
+            else:
+                neg_binary=utilFunc.twosComplement(binary, 64)
+                print 'register value: -' + str(int(neg_binary,2))
         else:
-            print 'register value:' + hex(int(regFile[regnum],2))
+            print 'register value:' + hex(int(mem.regFile[regnum],2))
     elif regtype == 'w':
         if regbase == 'd':
-            print 'register value:' + str(int(regFile[regnum][32:64],2))
-        else:
-            print 'register value:' + hex(int(regFile[regnum][32:64],2))
+            binary=mem.regFile[regnum][32:64]
+            if binary[0]=='0':
+                print 'register value:' + str(int(binary,2))
+            else:
+                neg_binary=utilFunc.twosComplement(binary, 32)
+                print 'register value: -' + str(int(neg_binary,2))
+            
+            
+def executeFlag():
+    utilFunc.printAllFlags()
+    
+def executeRegs():
+    i=0;
+    for x in mem.regFile:
+        print 'Register'+str(i)+': '+hex(int(x,2))
+        i=i+1
+    
+def printMainHelp():
+    print ''
+    print '--------------------------------------------------------------------------------------------------------'
+    print 'Syntax: python <PATH-TO PROJECT>/main.py [--help,--debug] [filename]'
+    print 'Options: '
+    print '1. --help : Prints this output. '
+    print '2. --debug filename: Starts debugger for elf file with title filename'
+    print '3. filename: Should be the relative/absolute path of the elf file directed towards ARMv8 architecture'
+    print '--------------------------------------------------------------------------------------------------------'
+    print ''
+    
+def executeDebuggerHelp():
+    print ''
+    print '------------------------------------'
+    print 'Debug Options List: '
+    print '1. help : Prints this output. '
+    print '2. s : Runs next instruction and halt'
+    print '3. c : Runs all instructions, but halts at next breakpoint'
+    print '4. run : Runs all instructions till last and halt'
+    print '5. break <ADDRESS> : Puts a breakpoint at the hexadecimal <ADDRESS>'
+    print '6. del <ADDRESS> : Deletes the breakpoint at the hexadecimal <ADDRESS>'
+    print '7. flags: Print the state of all flags'
+    print '8. regs: Print the state of all registers in hex(64 binary digits)'
+    print '9. print <d/x> <w/x>num: prints the decimal/hexadecimal equivalent of register(32bit/64bit) number num'
+    print '10. exit: Exits the program(with the debugger)'
+    print '------------------------------------'
+    print ''

@@ -3,10 +3,10 @@ Created on Aug 8, 2014
 
 @author: harinder
 '''
-
-from arm.utils import utilFunc, const
-from arm.utils.mem import regFile
-from arm.utils.utilFunc import finalize, lsl, lsr, asr, addSub, binaryToHexStr
+import utilFunc
+from mem import regFile
+from utilFunc import binaryToHexStr, addSub, lsl, lsr, asr, finalize
+import const
 
 
 def op_i(binary, N, instr,sub_op,setFlags):

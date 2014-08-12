@@ -3,8 +3,10 @@ Created on Aug 8, 2014
 
 @author: harinder
 '''
-from arm.execute import executor_addSub, executor_move, executor_shift
-from arm.execute import executor_logical
+import executor_addSub
+import executor_logical
+import executor_move
+import executor_shift
 
 def INSTRUCTION_TYPE(binary,i):
     try:
