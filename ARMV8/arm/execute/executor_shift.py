@@ -3,6 +3,8 @@ Created on Aug 8, 2014
 
 @author: harinder
 '''
+
+from arm.utils.utilFunc import setInstrFlag
 from arm.utils.mem import regFile
 from arm.utils import utilFunc
 from arm.utils.utilFunc import finalize
@@ -52,3 +54,4 @@ def execLsr_r64(binary):
     instr = 'LSR x'+str(rdKey)+", x"+str(rnKey)+", x"+str(rmKey)
     rd = utilFunc.lsr(rnVal, int(rmVal[58:64],2))
     finalize(rdKey, rd, instr)
+
