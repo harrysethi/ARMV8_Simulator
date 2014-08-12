@@ -3,11 +3,9 @@ Created on Aug 8, 2014
 
 @author: harinder
 '''
-from arm.utils.utilFunc import setInstrFlag
 from arm.utils.mem import regFile
-from arm.utils import const, utilFunc
-
-
+from arm.utils import utilFunc
+from arm.utils.utilFunc import finalize
 
 #Helper function
 def getFields_r(binary):
@@ -18,45 +16,39 @@ def getFields_r(binary):
     rmVal = regFile[rmKey]
     return rdKey, rnKey, rmKey, rnVal, rmVal
 
-#Helper function
-def finalize_r(rdKey, instr, rd):
-    del regFile[rdKey]
-    regFile.insert(rdKey, rd)
-    print instr
-    setInstrFlag()
 
-def execAsr_r32(binary):    
+def execAsr_r32(binary):
     rdKey, rnKey, rmKey, rnVal, rmVal = getFields_r(binary)
-    instr = 'ASR w'+rdKey+", w"+rnKey+", w"+rmKey
+    instr = 'ASR w'+str(rdKey)+", w"+str(rnKey)+", w"+str(rmKey)
     rd = '0'*32+utilFunc.asr(rnVal[32:64], int(rmVal[59:64],2))
-    finalize_r(rdKey, instr, rd)
+    finalize(rdKey, rd, instr)
                        
 def execLsl_r32(binary):
     rdKey, rnKey, rmKey, rnVal, rmVal = getFields_r(binary)
-    instr = 'LSL w'+rdKey+", w"+rnKey+", w"+rmKey
+    instr = 'LSL w'+str(rdKey)+", w"+str(rnKey)+", w"+str(rmKey)
     rd = '0'*32+utilFunc.lsl(rnVal[32:64], int(rmVal[59:64],2))
-    finalize_r(rdKey, instr, rd)
+    finalize(rdKey, rd, instr)
     
 def execLsr_r32(binary):
     rdKey, rnKey, rmKey, rnVal, rmVal = getFields_r(binary)
-    instr = 'LSR w'+rdKey+", w"+rnKey+", w"+rmKey
+    instr = 'LSR w'+str(rdKey)+", w"+str(rnKey)+", w"+str(rmKey)
     rd = '0'*32+utilFunc.lsr(rnVal[32:64], int(rmVal[59:64],2))
-    finalize_r(rdKey, instr, rd)
+    finalize(rdKey, rd, instr)
     
 def execAsr_r64(binary):
     rdKey, rnKey, rmKey, rnVal, rmVal = getFields_r(binary)
-    instr = 'ASR x'+rdKey+", x"+rnKey+", x"+rmKey
+    instr = 'ASR x'+str(rdKey)+", x"+str(rnKey)+", x"+str(rmKey)
     rd = utilFunc.asr(rnVal, int(rmVal[58:64],2))
-    finalize_r(rdKey, instr, rd)
+    finalize(rdKey, rd, instr)
                        
 def execLsl_r64(binary):
     rdKey, rnKey, rmKey, rnVal, rmVal = getFields_r(binary)
-    instr = 'LSL x'+rdKey+", x"+rnKey+", x"+rmKey
+    instr = 'LSL x'+str(rdKey)+", x"+str(rnKey)+", x"+str(rmKey)
     rd = utilFunc.lsl(rnVal, int(rmVal[58:64],2))
-    finalize_r(rdKey, instr, rd)
+    finalize(rdKey, rd, instr)
     
 def execLsr_r64(binary):
     rdKey, rnKey, rmKey, rnVal, rmVal = getFields_r(binary)
-    instr = 'LSR x'+rdKey+", x"+rnKey+", x"+rmKey
+    instr = 'LSR x'+str(rdKey)+", x"+str(rnKey)+", x"+str(rmKey)
     rd = utilFunc.lsr(rnVal, int(rmVal[58:64],2))
-    finalize_r(rdKey, instr, rd)
+    finalize(rdKey, rd, instr)

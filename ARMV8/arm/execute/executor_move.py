@@ -4,34 +4,33 @@ Created on Aug 8, 2014
 @author: harinder
 '''
 from arm.utils import const
-from arm.utils.mem import regFile
 from arm.utils import utilFunc
+from arm.utils.utilFunc import binaryToHexStr
 
 
 def execMov_iwi32(binary):
-    instr = "MOV w" + mov_imm(binary)
-    print instr
+    mov_imm(binary, "MOV w", '1', 32)
     
 def execMov_iwi64(binary):
-    instr = "MOV x" + mov_imm(binary)
-    print instr
+    mov_imm(binary, "MOV x", '1', 64)
     
 def execMov_wi32(binary):
-    instr = "MOV w" + mov_imm(binary)
-    print instr
+    mov_imm(binary, "MOV w", '0', 32)
     
-def execMov_wi64(binary):    
-    instr = "MOV x" + mov_imm(binary)
-    print instr
+def execMov_wi64(binary):
+    mov_imm(binary, "MOV x", '0', 64)
     
-def mov_imm(binary):
+def mov_imm(binary, instr, inverted, N):    
     rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])
-    imm16 = binary[11:27].zfill(const.REG_SIZE)
-    instr = str(rdKey)+", "+hex(int(imm16,2))
-    del regFile[rdKey]
-    regFile.insert(rdKey,imm16)
-    utilFunc.setInstrFlag()
-    return instr
+    hw = binary[9:11]
+    pos = utilFunc.uInt(hw+'0000')
+    
+    imm16 = binary[11:27]
+    result = (imm16+'0'*pos).zfill(N)
+    if(inverted == '1'):
+        result = utilFunc.negate(result)
+    instr = instr + str(rdKey)+", #"+binaryToHexStr(result)
+    utilFunc.finalize(rdKey, result.zfill(const.REG_SIZE), instr)
                        
 def execMov_bmi32(binary):
     rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])

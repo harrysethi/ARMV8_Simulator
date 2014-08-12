@@ -4,18 +4,16 @@ Created on Aug 8, 2014
 @author: harinder
 '''
 
-from arm.utils.mem import regFile
 from arm.execute import decoder
-from arm.utils.utilFunc import resetInstrFlag
-        
+from arm.utils.utilFunc import resetInstrFlag, printAllFlags, printAllRegs
+
 def main():
     print "Inside Main"
-    #52800061,528000a2,0a020020
-    hexes = ["52800061","528000a2","0a020020"]
+    hexes = ["52800102","52800021","2b017c43"]
     for hexcode in hexes:
         resetInstrFlag()
         decoder.decodeInstr(hexcode)
-    for x in regFile:
-        print x
-        
+    printAllRegs()
+    printAllFlags()
+
 main()

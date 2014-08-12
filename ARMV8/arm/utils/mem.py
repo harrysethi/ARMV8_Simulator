@@ -6,9 +6,5 @@ Created on Aug 8, 2014
 
 
 regFile = list('0'*64 for i in range(32))
-
-#flags
-n_flag = 0
-z_flag = 0
-c_flag = 0
-v_flag = 0
+#flags-order: n,z,c,v
+flagFile = list('0' for i in range(4))

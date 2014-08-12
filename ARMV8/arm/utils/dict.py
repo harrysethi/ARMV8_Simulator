@@ -27,10 +27,10 @@ def ADD_SUB_IMMEDIATE(binary):
        "00110001" : executor_addSub.execAdds_i32,
        "01010001" : executor_addSub.execSub_i32,
        "01110001" : executor_addSub.execSubs_i32,
-       "00010001" : executor_addSub.execAdd_i64,
-       "00110001" : executor_addSub.execAdds_i64,
-       "01010001" : executor_addSub.execSub_i64,
-       "01110001" : executor_addSub.execSubs_i64,
+       "10010001" : executor_addSub.execAdd_i64,
+       "10110001" : executor_addSub.execAdds_i64,
+       "11010001" : executor_addSub.execSub_i64,
+       "11110001" : executor_addSub.execSubs_i64,
     }[key](binary)
       
 def ADD_SUB_SHIFT_REG(binary):
