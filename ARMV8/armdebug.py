@@ -307,23 +307,25 @@ def executePrintReg(command): #list of strings in command
         return
     
     if regtype == 'x':
-        if regbase == 'd':
-            binary=mem.regFile[regnum]
+        binary=mem.regFile[regnum]
+        if regbase == 'd':            
             if binary[0]=='0':
                 print 'register value:' + str(int(binary,2))
             else:
                 neg_binary=utilFunc.twosComplement(binary, 64)
                 print 'register value: -' + str(int(neg_binary,2))
         else:
-            print 'register value:' + hex(int(mem.regFile[regnum],2))
+            print 'register value: ' + hex(int(binary,2))
     elif regtype == 'w':
-        if regbase == 'd':
-            binary=mem.regFile[regnum][32:64]
+        binary=mem.regFile[regnum][32:64]
+        if regbase == 'd':            
             if binary[0]=='0':
                 print 'register value:' + str(int(binary,2))
             else:
                 neg_binary=utilFunc.twosComplement(binary, 32)
                 print 'register value: -' + str(int(neg_binary,2))
+        else:
+            print 'register value: ' + hex(int(binary, 2))
             
             
 def executeFlag():
