@@ -11,8 +11,7 @@ import os
 import parsehelper
 import armdebug
 from armdebug import isDebugMode, executeRegs, executeFlag
-from utilFunc import resetInstrFlag, printAllRegs, printAllFlags
-from mem import regFile
+from utilFunc import resetInstrFlag
 import sys
 
     

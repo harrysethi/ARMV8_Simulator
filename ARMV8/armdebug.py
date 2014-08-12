@@ -9,6 +9,7 @@ import parsehelper
 import utilFunc
 import decoder
 import mem
+from utilFunc import binaryToHexStr
 
 DEBUG_MODE=False
 PC = 0
@@ -334,7 +335,7 @@ def executeFlag():
 def executeRegs():
     i=0;
     for x in mem.regFile:
-        print 'Register'+str(i)+': '+hex(int(x,2))
+        print 'Register'+str(i)+': '+binaryToHexStr(x)
         i=i+1
     
 def printMainHelp():
