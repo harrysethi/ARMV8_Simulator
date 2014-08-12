@@ -46,8 +46,8 @@ if __name__ == '__main__':
         try:
             hexes=parsehelper.return_parsed_text_section(filename)
         except:
-            print "He's dead Jim." 
-            print "The inputfile seems to be a not compatibe ARMv8 elf"
+            print "He's dead Larry." 
+            print "The inputfile seems to be a not compatibe ARMv8 elf."
             sys.exit(0)
         
         if isDebugMode():
