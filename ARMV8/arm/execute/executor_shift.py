@@ -4,7 +4,6 @@ Created on Aug 8, 2014
 @author: harinder
 '''
 
-from arm.utils.utilFunc import setInstrFlag
 from arm.utils.mem import regFile
 from arm.utils import utilFunc
 from arm.utils.utilFunc import finalize
