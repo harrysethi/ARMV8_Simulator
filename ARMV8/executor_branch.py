@@ -32,10 +32,11 @@ def conditionHolds(bits_four):
         result=True
         cond='AL'
         
-    if bits_four[3]=='1' and bits_four!='1111':
+    if bits_four[-1]=='1' and bits_four!='1111':
         result= not result
         
-    return result, cond
+    print cond
+    return (result, cond)
 
 def execB(binary):
     inst ='B OFFSET('
@@ -55,11 +56,13 @@ def execB(binary):
     
 def execBCond(binary):
     bits_four=binary[-4]
-    result, cond=conditionHolds(bits_four)
-    if not result:
-        return
+    xx=conditionHolds(bits_four)
     
-    inst ='B.'+cond+' OFFSET('
+    if not xx[0]:
+        return
+    print xx[0]
+    print xx[1]
+    inst ='B.'+xx[1]+' OFFSET('
     imm19key=binary[8:27]
     imm19key=utilFunc.signExtend(imm19key+'00', 64) #times 4 and 64 bits
     sign=imm19key[0]
