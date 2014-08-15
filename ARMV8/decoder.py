@@ -7,6 +7,8 @@ Created on Aug 8, 2014
 import dicts
 import utilFunc
 import const
+import dicts_branch
+import dicts_loadStore
 
 def decodeInstr(hexCode): 
     binary = utilFunc.hexToBin(hexCode)

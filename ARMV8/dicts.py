@@ -5,6 +5,7 @@ import executor_addSub
 import executor_logical
 import executor_move
 import executor_shift
+import executor_pcRel
 
 def INSTRUCTION_TYPE(binary,i):
     try:

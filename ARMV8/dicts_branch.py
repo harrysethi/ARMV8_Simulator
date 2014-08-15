@@ -1,6 +1,7 @@
 '''
 @author: harinder
 '''
+import executor_branch
 
 def INSTRUCTION_TYPE(binary,i):
     try:
@@ -31,7 +32,7 @@ def UNCONDITIONAL_BRANCH_REGISTER(binary):
 def CONDITIONAL_BRANCH_IMMEDIATE(binary):
     key = binary[0:8]+"-"*19+binary[27]
     return {
-       "01010100"+"-"*19+"0" : executor_branch.execBCOND,
+       "01010100"+"-"*19+"0" : executor_branch.execBCond,
     }[key](binary)
     
 def COMPARE_AND_BRANCH_IMMEDIATE(binary):

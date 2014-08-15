@@ -1,6 +1,7 @@
 '''
 @author: harinder
 '''
+import executor_pcRel
 
 def INSTRUCTION_TYPE(binary,i):
     try:
