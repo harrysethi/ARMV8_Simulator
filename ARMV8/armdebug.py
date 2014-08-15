@@ -9,7 +9,7 @@ import parsehelper
 import utilFunc
 import decoder
 import mem
-from utilFunc import binaryToHexStr
+import utilFunc
 
 DEBUG_MODE=False
 PC = 0
@@ -316,7 +316,7 @@ def executePrintReg(command): #list of strings in command
                 neg_binary=utilFunc.twosComplement(binary, 64)
                 print 'register value: -' + str(int(neg_binary,2))
         else:
-            print 'register value: ' + binaryToHexStr(binary)
+            print 'register value: ' + utilFunc.binaryToHexStr(binary)
     elif regtype == 'w':
         binary=mem.regFile[regnum][32:64]
         if regbase == 'd':            
@@ -326,7 +326,7 @@ def executePrintReg(command): #list of strings in command
                 neg_binary=utilFunc.twosComplement(binary, 32)
                 print 'register value: -' + str(int(neg_binary,2))
         else:
-            print 'register value: ' + binaryToHexStr(binary)
+            print 'register value: ' + utilFunc.binaryToHexStr(binary)
             
             
 def executeFlag():
@@ -335,7 +335,7 @@ def executeFlag():
 def executeRegs():
     i=0;
     for x in mem.regFile:
-        print 'Register'+str(i)+': '+binaryToHexStr(x)
+        print 'Register'+str(i)+': '+utilFunc.binaryToHexStr(x)
         i=i+1
     
 def printMainHelp():

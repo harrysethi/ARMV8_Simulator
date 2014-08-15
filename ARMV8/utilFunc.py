@@ -4,7 +4,8 @@ Created on Aug 8, 2014
 @author: harinder
 '''
 import const
-from mem import regFile, flagFile
+import mem
+import armdebug
 
 def hexToBin(s):
     scale = 16 ## equals to hexadecimal    
@@ -29,7 +30,7 @@ def ror(s,i):
 #key should be broen already        
 def getRegValueByStringkey(key):  
     key = int(key,2)
-    return regFile[key]
+    return mem.regFile[key]
 
 def getRegKeyByStringKey(key):
     key = int(key,2)
@@ -57,8 +58,8 @@ def resetInstrFlag():
     
 #sets the register value, prints the inst, sets the instr flag
 def finalize(rdKey, val, instr):
-    del regFile[rdKey]
-    regFile.insert(rdKey,val)
+    del mem.regFile[rdKey]
+    mem.regFile.insert(rdKey,val)
     print instr
     const.FLAG_INST_EXECUTED="1"
     
@@ -127,46 +128,46 @@ def binaryToHexStr(x):
     
 #get flags
 def get_N_flag():
-    return flagFile[0];
+    return mem.flagFile[0];
     
 def set_N_flag():
-    flagFile[0] = '1';
+    mem.flagFile[0] = '1';
 
 def reset_N_flag():
-    flagFile[0] = '0';
+    mem.flagFile[0] = '0';
 
 def get_Z_flag():
-    return flagFile[1];
+    return mem.flagFile[1];
     
 def set_Z_flag():
-    flagFile[1] = '1';
+    mem.flagFile[1] = '1';
     
 def reset_Z_flag():
-    flagFile[1] = '0';
+    mem.flagFile[1] = '0';
 
 def get_C_flag():
-    return flagFile[2];
+    return mem.flagFile[2];
     
 def set_C_flag():
-    flagFile[2] = '1';
+    mem.flagFile[2] = '1';
     
 def reset_C_flag():
-    flagFile[2] = '0';
+    mem.flagFile[2] = '0';
 
 def get_V_flag():
-    return flagFile[3];
+    return mem.flagFile[3];
     
 def set_V_flag():
-    flagFile[3] = '1';
+    mem.flagFile[3] = '1';
 
 def reset_V_flag():
-    flagFile[3] = '0';
+    mem.flagFile[3] = '0';
 
 def printAllFlags():
     print "flags(z,v,n,c): " + get_Z_flag() + "," + get_V_flag() + "," + get_N_flag() + "," + get_C_flag()
     
 def printAllRegs():
-    for x in regFile:
+    for x in mem.regFile:
         print x
 
 #usage give a binary of length <=N
@@ -179,3 +180,6 @@ def signExtend(binary, N):
         prepend+=sign
     binary=prepend+binary
     return binary
+
+def branchWithOffset(offset): #signed offset
+    armdebug.setPC((armdebug.getPC()+offset-4)) #the magic! #-4 for the current instruction
