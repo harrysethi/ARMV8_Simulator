@@ -1,6 +1,4 @@
 '''
-Created on Aug 8, 2014
-
 @author: harinder
 '''
 
@@ -33,7 +31,7 @@ def UNCONDITIONAL_BRANCH_REGISTER(binary):
 def CONDITIONAL_BRANCH_IMMEDIATE(binary):
     key = binary[0:8]+"-"*19+binary[27]
     return {
-       "01010100"+"-"*19+"0" : executor_branch.execB_COND,
+       "01010100"+"-"*19+"0" : executor_branch.execBCOND,
     }[key](binary)
     
 def COMPARE_AND_BRANCH_IMMEDIATE(binary):

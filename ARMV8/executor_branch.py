@@ -42,11 +42,35 @@ def execBCond(binary):
     print inst+')'
     armdebug.setPC(armdebug.getPC()+offset) #the magic!
 
-def testB():
+'''def testB():
     binary=utilFunc.hexToBin('17fffffd')
     execB(binary)
     binary=utilFunc.hexToBin('14000002')
     execB(binary)
     
     
-testB()
+testB()'''
+    
+def execBL(binary):
+    '''Not implemented yet'''
+    
+def execBR(binary):
+    '''Not implemented yet'''
+    
+def execBLR(binary):
+    '''Not implemented yet'''
+    
+def execRET(binary):
+    '''Not implemented yet'''
+    
+def execCBZ_32(binary):
+    '''Not implemented yet'''
+    
+def execCBNZ_32(binary):
+    '''Not implemented yet'''
+    
+def execCBZ_64(binary):
+    '''Not implemented yet'''
+    
+def execCBNZ_64(binary):
+    '''Not implemented yet'''
