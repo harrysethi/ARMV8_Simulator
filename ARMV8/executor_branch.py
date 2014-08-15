@@ -20,8 +20,9 @@ def execB(binary):
     else:
         offset=int(imm26key, 2)
     inst+=str(int(imm26key, 2))
-    print inst+')'
+    inst= inst+')'
     utilFunc.branchWithOffset(offset) #the magic!
+    utilFunc.finalize_simple(inst)
     
 def execBCond(binary):
     bits_four=binary[-4:]
@@ -44,10 +45,9 @@ def execBCond(binary):
     else:
         offset=int(imm19key, 2)
     inst+=str(int(imm19key, 2))
-    print inst+')'
+    inst=inst+')'
     utilFunc.branchWithOffset(offset) #the magic!
-    
-
+    utilFunc.finalize_simple(inst)
     
 def execBL(binary):
     '''Not implemented yet'''
@@ -62,35 +62,17 @@ def execRET(binary):
     '''Not implemented yet'''
     
 def execCBZ_32(binary):
-    rtKey=binary[-5:]
-    inst='CBZ W'
-    regnum=utilFunc.uInt(rtKey)
-    inst+=str(regnum)+', OFFSET('
-    imm19Key=binary[8:27]
-    imm19Key=imm19Key+'00'
-    imm19Key=utilFunc.signExtend(imm19Key, 64)
-    sign=imm19Key[0]
-    offset=''
-    if sign=='1':
-        imm19Key=utilFunc.twosComplement(imm19Key, 64)
-        inst+='-'
-        offset=-int(imm19Key, 2)
-    else:
-        offset=int(imm19Key, 2)
-    inst+=str(int(imm19Key, 2))+')'
-    print inst
-    regValue=getRegValueByStringkey(rtKey)
-    regValue=regValue[32:64]#since CBZ_32
-    if regValue=='0'*32:
-        utilFunc.branchWithOffset(offset)
+    CBZClass(binary, 32, True)
     
 def execCBNZ_32(binary):
+    CBZClass(binary, 32, False)
     '''Not implemented yet'''
     
 def execCBZ_64(binary):
-    '''Not implemented yet'''
+    CBZClass(binary, 64, True)
     
 def execCBNZ_64(binary):
+    CBZClass(binary, 64, False)
     '''Not implemented yet'''
 
 '''def testB():
@@ -105,8 +87,42 @@ def testBCond():
     execBCond(binary)
     
 testBCond()'''
-
+    
+'''
 utilFunc.set_Z_flag()
 utilFunc.printAllFlags()
 binary=utilFunc.hexToBin('5400002e')
-execBCond(binary)
+execBCond(binary)'''
+
+def CBZClass(binary,width,bool):
+    rtKey=binary[-5:]
+    inst='CBZ '
+    char=''
+    if width==64:
+        char='X'
+    else:
+        char='W'
+    inst+=char
+    regnum=utilFunc.uInt(rtKey)
+    inst+=str(regnum)+', OFFSET('
+    imm19Key=binary[8:27]
+    imm19Key=imm19Key+'00'
+    imm19Key=utilFunc.signExtend(imm19Key, 64)
+    sign=imm19Key[0]
+    offset=''
+    if sign=='1':
+        imm19Key=utilFunc.twosComplement(imm19Key, 64)
+        inst+='-'
+        offset=-int(imm19Key, 2)
+    else:
+        offset=int(imm19Key, 2)
+    inst+=str(int(imm19Key, 2))+')'
+    regValue=getRegValueByStringkey(rtKey)
+    regValue=regValue[0:width]#since CBZ_32
+    if bool:
+        if regValue=='0'*width:
+            utilFunc.branchWithOffset(offset)
+    else:
+        if regValue!='0'*width:
+            utilFunc.branchWithOffset(offset)
+    utilFunc.finalize_simple(inst)
