@@ -168,3 +168,14 @@ def printAllFlags():
 def printAllRegs():
     for x in regFile:
         print x
+
+#usage give a binary of length <=N
+#sign extends it and returns the resulting binary
+def signExtend(binary, N):
+    assert len(binary)<=N
+    sign=binary[0] #sign extend!!! whoo!!
+    prepend=''
+    for x in range(N-len(binary)):
+        prepend+=sign
+    binary=prepend+binary
+    return binary
