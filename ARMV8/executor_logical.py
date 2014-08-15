@@ -9,7 +9,7 @@ import utilFunc
 import const
 
 def execAnd_i32(binary):
-    '''Not implemented yet'''    
+    '''Not implemented yet'''
     
 def execAnd_i64(binary):
     '''Not implemented yet'''
