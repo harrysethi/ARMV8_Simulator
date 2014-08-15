@@ -9,13 +9,10 @@ from utilFunc import getRegKeyByStringKey, getRegValueByStringkey, lsl, lsr, asr
 import const
 
 def execAnd_i32(binary):
-    rdKey = int(binary[27:32],2)
-    rnKey = int(binary[22:27],2)
-    
+    '''Not implemented yet'''    
     
 def execAnd_i64(binary):
-    rdKey = int(binary[27:32],2)
-    rnKey = int(binary[22:27],2)
+    '''Not implemented yet'''
     
     
 def execAnd_sr32(binary):    

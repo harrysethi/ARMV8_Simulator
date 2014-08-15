@@ -32,7 +32,7 @@ def mov_imm(binary, instr, inverted, N):
     utilFunc.finalize(rdKey, result.zfill(const.REG_SIZE), instr)
                        
 def execMov_bmi32(binary):
-    rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])
+    '''Not implemented yet'''
     
 def execMov_bmi64(binary):
-    rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])
+    '''Not implemented yet'''
