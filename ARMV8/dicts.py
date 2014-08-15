@@ -5,7 +5,7 @@ import executor_addSub
 import executor_logical
 import executor_move
 import executor_shift
-import executor_pcRel
+import executor_misc
 
 def INSTRUCTION_TYPE(binary,i):
     try:
@@ -18,6 +18,7 @@ def INSTRUCTION_TYPE(binary,i):
             5 : SHIFT_REGISTER,
             6 : LOGICAL_IMMEDIATE,
             7 : PC_RELATIVE,
+            8 : NOP,
         }[i](binary)
     except KeyError:
         i=i
@@ -87,8 +88,8 @@ def MOVE_IMMEDIATE(binary):
        "001100100" : executor_move.execMov_bmi32,
        "101100100" : executor_move.execMov_bmi64,
     }[key](binary)
-    
-        
+
+
 def SHIFT_REGISTER(binary):
     key = binary[0:11]+"-"*5+binary[16:22]
     return {
@@ -99,11 +100,17 @@ def SHIFT_REGISTER(binary):
        "00011010110-----001001" : executor_shift.execLsr_r32,
        "10011010110-----001001" : executor_shift.execLsr_r64,
     }[key](binary)
-    
+
 def PC_RELATIVE(binary):
     key = binary[0]+"--"+binary[3:8]
     return {       
-       "0--10000" : executor_pcRel.execADR,
-       "1--10000" : executor_pcRel.execADRP,
+       "0--10000" : executor_misc.execADR,
+       "1--10000" : executor_misc.execADRP,
     }[key](binary)
     
+def NOP(binary):
+    key = binary[0:21]+"-"*7+binary[27:32]
+    return {
+       "11010101000000110010"+"-"*7+"11111" : executor_misc.execNOP,
+    }[key](binary)
+

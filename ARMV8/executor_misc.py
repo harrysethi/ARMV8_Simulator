@@ -9,3 +9,6 @@ def execADR(binary):
 
 def execADRP(binary):
     '''Not implemented yet'''
+
+def execNOP(binary):
+    print "NOP"
