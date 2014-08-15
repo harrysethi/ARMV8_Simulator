@@ -109,8 +109,7 @@ def PC_RELATIVE(binary):
     }[key](binary)
     
 def NOP(binary):
-    key = binary[0:21]+"-"*7+binary[27:32]
+    key = binary[0:20]+"-"*7+binary[27:32]
     return {
        "11010101000000110010"+"-"*7+"11111" : executor_misc.execNOP,
     }[key](binary)
-
