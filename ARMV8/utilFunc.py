@@ -62,8 +62,11 @@ def resetInstrFlag():
     
 #sets the register value, prints the inst, sets the instr flag
 def finalize(rdKey, val, instr):
-    del mem.regFile[rdKey]
-    mem.regFile.insert(rdKey,val)
+    assert rdKey>=0 and rdKey<=31
+    if(rdKey != 31):
+        #ignoring the result - zero register        
+        del mem.regFile[rdKey]
+        mem.regFile.insert(rdKey,val)
     finalize_simple(instr)
     
 def finalize_simple(instr):

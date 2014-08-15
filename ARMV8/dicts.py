@@ -37,16 +37,16 @@ def ADD_SUB_IMMEDIATE(binary):
     }[key](binary)
       
 def ADD_SUB_SHIFT_REG(binary):
-    key = binary[0:8]
+    key = binary[0:8]+"--"+binary[10]
     return {
-       "00001011" : executor_addSub.execAdd_sr32,
-       "00101011" : executor_addSub.execAdds_sr32,
-       "01001011" : executor_addSub.execSub_sr32,
-       "01101011" : executor_addSub.execSubs_sr32,
-       "10001011" : executor_addSub.execAdd_sr64,
-       "10101011" : executor_addSub.execAdds_sr64,
-       "11001011" : executor_addSub.execSub_sr64,
-       "11101011" : executor_addSub.execSubs_sr64,
+       "00001011--0" : executor_addSub.execAdd_sr32,
+       "00101011--0" : executor_addSub.execAdds_sr32,
+       "01001011--0" : executor_addSub.execSub_sr32,
+       "01101011--0" : executor_addSub.execSubs_sr32,
+       "10001011--0" : executor_addSub.execAdd_sr64,
+       "10101011--0" : executor_addSub.execAdds_sr64,
+       "11001011--0" : executor_addSub.execSub_sr64,
+       "11101011--0" : executor_addSub.execSubs_sr64,
     }[key](binary)
     
 def ADD_SUB_EXT_REG(binary):
