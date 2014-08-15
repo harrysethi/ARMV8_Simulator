@@ -5,47 +5,7 @@ Created on Aug 8, 2014
 '''
 
 import utilFunc
-
-def conditionHolds(bits_four):
-    #print 'condHolds'
-    first_three=bits_four[0:3]
-    #print first_three
-    result=False
-    cond=''
-    if first_three=='000':
-        result=utilFunc.get_Z_flag()=='1'
-        cond='EQ/NE'
-        #print '1'
-    elif first_three=='001':
-        result=utilFunc.get_C_flag()=='1'
-        cond='CS/CC'
-        #print '2'
-    elif first_three=='010':
-        result=utilFunc.get_N_flag()=='1'
-        cond='MI/PL'
-        #print '3'
-    elif first_three=='011':
-        result=utilFunc.get_V_flag()=='1'
-        cond='VS/VC'
-        #print '4'
-    elif first_three=='100':
-        result=utilFunc.get_C_flag()=='1' and utilFunc.get_Z_flag()=='0'
-        cond='HI/LS'
-        #print '5'
-    elif first_three=='101':
-        result=(utilFunc.get_N_flag()==utilFunc.get_V_flag())
-        cond='GE/LT'
-        #print '6'
-    elif first_three=='111':
-        result=True
-        cond='AL'
-        #print'7'
-        
-    if bits_four[-1]=='1' and bits_four!='1111':
-        result= not result
-        #print '8'
-    print cond
-    return (result, cond)
+from utilFunc import uInt, signExtend, getRegValueByStringkey
 
 def execB(binary):
     inst ='B OFFSET('
@@ -66,7 +26,7 @@ def execB(binary):
 def execBCond(binary):
     bits_four=binary[-4:]
     #print 'bits four: '+bits_four
-    xx=conditionHolds(bits_four)
+    xx=utilFunc.conditionHolds(bits_four)
     
     if not xx[0]:
         return
@@ -102,7 +62,27 @@ def execRET(binary):
     '''Not implemented yet'''
     
 def execCBZ_32(binary):
-    '''Not implemented yet'''
+    rtKey=binary[-5:]
+    inst='CBZ W'
+    regnum=utilFunc.uInt(rtKey)
+    inst+=str(regnum)+', OFFSET('
+    imm19Key=binary[8:27]
+    imm19Key=imm19Key+'00'
+    imm19Key=utilFunc.signExtend(imm19Key, 64)
+    sign=imm19Key[0]
+    offset=''
+    if sign=='1':
+        imm19Key=utilFunc.twosComplement(imm19Key, 64)
+        inst+='-'
+        offset=-int(imm19Key, 2)
+    else:
+        offset=int(imm19Key, 2)
+    inst+=str(int(imm19Key, 2))+')'
+    print inst
+    regValue=getRegValueByStringkey(rtKey)
+    regValue=regValue[32:64]#since CBZ_32
+    if regValue=='0'*32:
+        utilFunc.branchWithOffset(offset)
     
 def execCBNZ_32(binary):
     '''Not implemented yet'''
@@ -125,8 +105,8 @@ def testBCond():
     execBCond(binary)
     
 testBCond()'''
-'''
+
 utilFunc.set_Z_flag()
 utilFunc.printAllFlags()
 binary=utilFunc.hexToBin('5400002e')
-execBCond(binary)'''
+execBCond(binary)

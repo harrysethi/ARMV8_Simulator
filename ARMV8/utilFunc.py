@@ -27,10 +27,14 @@ def ror(s,i):
     return s
 
 #gives 64 bit, truncate when using
-#key should be broen already        
+#key should be 0 to 31 in binary string
 def getRegValueByStringkey(key):  
     key = int(key,2)
-    return mem.regFile[key]
+    assert key>=0 and key<=31
+    if key!=31:
+        return mem.regFile[key]
+    else:
+        return '0'*64
 
 def getRegKeyByStringKey(key):
     key = int(key,2)
@@ -60,6 +64,9 @@ def resetInstrFlag():
 def finalize(rdKey, val, instr):
     del mem.regFile[rdKey]
     mem.regFile.insert(rdKey,val)
+    finalize_simple(instr)
+    
+def finalize_simple(instr):
     print instr
     const.FLAG_INST_EXECUTED="1"
     
@@ -183,3 +190,45 @@ def signExtend(binary, N):
 
 def branchWithOffset(offset): #signed offset
     armdebug.setPC((armdebug.getPC()+offset-4)) #the magic! #-4 for the current instruction
+    
+    
+def conditionHolds(bits_four):
+    #print 'condHolds'
+    first_three=bits_four[0:3]
+    #print first_three
+    result=False
+    cond=''
+    if first_three=='000':
+        result=get_Z_flag()=='1'
+        cond='EQ/NE'
+        #print '1'
+    elif first_three=='001':
+        result=get_C_flag()=='1'
+        cond='CS/CC'
+        #print '2'
+    elif first_three=='010':
+        result=get_N_flag()=='1'
+        cond='MI/PL'
+        #print '3'
+    elif first_three=='011':
+        result=get_V_flag()=='1'
+        cond='VS/VC'
+        #print '4'
+    elif first_three=='100':
+        result=get_C_flag()=='1' and get_Z_flag()=='0'
+        cond='HI/LS'
+        #print '5'
+    elif first_three=='101':
+        result=(get_N_flag()==get_V_flag())
+        cond='GE/LT'
+        #print '6'
+    elif first_three=='111':
+        result=True
+        cond='AL'
+        #print'7'
+        
+    if bits_four[-1]=='1' and bits_four!='1111':
+        result= not result
+        #print '8'
+    #print cond
+    return (result, cond)
