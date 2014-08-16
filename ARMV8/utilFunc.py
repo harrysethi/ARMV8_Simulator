@@ -79,7 +79,7 @@ def setRegValue(rdKey, val):
         
 #utility function that takes num int convert it into binary of size N
 def intToBinary(num,N):
-    str(bin(num))[2:].zfill(64)
+    return str(bin(num))[2:].zfill(64)
     
         
 #utility function used by all add-sub instructions

@@ -56,6 +56,8 @@ def execBL(binary):
     (instpart,offset)=getOffset(imm26key)
     inst+=instpart+')'
     nextAddr=armdebug.getPC()+4
+    print nextAddr
+    print utilFunc.intToBinary(nextAddr, 64)
     utilFunc.setRegValue(30, utilFunc.intToBinary(nextAddr, 64))
     utilFunc.branchWithOffset(offset)
     utilFunc.finalize_simple(inst)
