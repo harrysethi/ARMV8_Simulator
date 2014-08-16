@@ -186,8 +186,10 @@ def printAllFlags():
     print "flags(z,v,n,c): " + get_Z_flag() + "," + get_V_flag() + "," + get_N_flag() + "," + get_C_flag()
     
 def printAllRegs():
+    i = 0
     for x in mem.regFile:
-        print x
+        print str(i).zfill(2)+": "+x
+        i = i+1
 
 #usage give a binary of length <=N
 #sign extends it and returns the resulting binary

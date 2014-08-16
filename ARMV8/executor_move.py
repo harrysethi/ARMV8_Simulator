@@ -30,9 +30,27 @@ def mov_imm(binary, instr, inverted, N):
         result = utilFunc.negate(result)
     instr = instr + str(rdKey)+", #"+utilFunc.binaryToHexStr(result)
     utilFunc.finalize(rdKey, result.zfill(const.REG_SIZE), instr)
-                       
-def execMov_bmi32(binary):
+
+def mov_reg(binary, N):
     rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])
+    rmKey = utilFunc.getRegKeyByStringKey(binary[11:16])
+    rmVal = utilFunc.getRegValueByStringkey(binary[11:16])
+    if(N == 32):
+        rmVal = rmVal[32:64]
+        r = 'w'
+    elif(N == 64):
+        r = 'x'
+    instr = "MOV "+r+str(rdKey)+", "+r+str(rmKey)
+    utilFunc.finalize(rdKey, rmVal.zfill(const.REG_SIZE), instr)
+
+def execMov_r32(binary):
+    mov_reg(binary, 32)
+    
+def execMov_r64(binary):
+    mov_reg(binary, 64)
+                           
+def execMov_bmi32(binary):
+    '''Not implemented yet'''
     
 def execMov_bmi64(binary):
-    rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])
+    '''Not implemented yet'''
