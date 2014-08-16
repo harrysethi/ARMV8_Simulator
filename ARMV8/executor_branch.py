@@ -75,7 +75,17 @@ def execBLR(binary):
     utilFunc.finalize_simple(inst)
     
 def execRET(binary):
-    '''Not implemented yet'''
+    inst = 'RET X'
+    rnKey=binary[22:27]
+    address_binary=utilFunc.getRegValueByStringkey(rnKey)
+    regnum=utilFunc.uInt(rnKey)
+    inst+=str(regnum)
+    hexstr = utilFunc.binaryToHexStr(address_binary)
+    if not armdebug.checkIfValidBreakPoint(hexstr):
+        utilFunc.finalize_simple('Instruction aborted. Invalid instruction address in register.')
+        return
+    utilFunc.branchToAddress(int(hexstr,16))
+    utilFunc.finalize_simple(inst)
     
 def execCBZ_32(binary):
     CBZClass(binary, 32, True)
