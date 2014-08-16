@@ -12,13 +12,14 @@ def INSTRUCTION_TYPE(binary,i):
         return {
             0 : ADD_SUB_IMMEDIATE,
             1 : MOVE_IMMEDIATE,
-            2 : ADD_SUB_EXT_REG,
-            3 : ADD_SUB_SHIFT_REG,
-            4 : LOGICAL_SHIFT_REG,
-            5 : SHIFT_REGISTER,
-            6 : LOGICAL_IMMEDIATE,
-            7 : PC_RELATIVE,
-            8 : NOP,
+            2 : MOVE_REGISTER,
+            3 : ADD_SUB_EXT_REG,
+            4 : ADD_SUB_SHIFT_REG,
+            5 : LOGICAL_SHIFT_REG,
+            6 : SHIFT_REGISTER,
+            7 : LOGICAL_IMMEDIATE,
+            8 : PC_RELATIVE,
+            9 : NOP,
         }[i](binary)
     except KeyError:
         i=i
@@ -87,6 +88,13 @@ def MOVE_IMMEDIATE(binary):
        "110100101" : executor_move.execMov_wi64,
        "001100100" : executor_move.execMov_bmi32,
        "101100100" : executor_move.execMov_bmi64,
+    }[key](binary)
+    
+def MOVE_REGISTER(binary):
+    key = binary[0:11]+"-"*5+binary[16:27]
+    return {
+       "00101010000-----00000011111" : executor_move.execMov_r32,
+       "10101010000-----00000011111" : executor_move.execMov_r64,
     }[key](binary)
 
 

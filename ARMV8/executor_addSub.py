@@ -11,7 +11,7 @@ import const
 def op_i(binary, N, instr,sub_op,setFlags):
     rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])
     rnKey = utilFunc.getRegKeyByStringKey(binary[22:27])
-    rnVal = mem.regFile[rnKey]
+    rnVal = utilFunc.getRegValueByStringkey(binary[22:27])
     if(N == 32):
         rnVal = rnVal[32:64]
         r = 'w'
@@ -76,8 +76,8 @@ def op_sr(binary, N, instr,sub_op,setFlags):
     imm6 = binary[16:22]
     imm6Val = int(imm6,2)
     
-    rnVal = mem.regFile[rnKey]
-    rmVal = mem.regFile[rmkey]
+    rnVal = utilFunc.getRegValueByStringkey(binary[22:27])
+    rmVal = utilFunc.getRegValueByStringkey(binary[11:16])
     if(N == 32):
         rnVal = rnVal[32:64]
         rmVal = rmVal[32:64]
@@ -117,42 +117,26 @@ def execSubs_sr64(binary):
     
 #Add Subtract - Extended register
 def execAdd_er32(binary):
-    rdKey = int(binary[27:32],2)
-    rnKey = int(binary[22:27],2)
-    
+   '''Not implemented yet'''    
     
 def execAdds_er32(binary):
-    rdKey = int(binary[27:32],2)
-    rnKey = int(binary[22:27],2)
-    
+   '''Not implemented yet'''    
     
 def execSub_er32(binary):
-    rdKey = int(binary[27:32],2)
-    rnKey = int(binary[22:27],2)
-    
+   '''Not implemented yet'''
     
 def execSubs_er32(binary):
-    rdKey = int(binary[27:32],2)
-    rnKey = int(binary[22:27],2)
-    
+    '''Not implemented yet'''
     
 def execAdd_er64(binary):
-    rdKey = int(binary[27:32],2)
-    rnKey = int(binary[22:27],2)
-    
+    '''Not implemented yet'''
     
 def execAdds_er64(binary):
-    rdKey = int(binary[27:32],2)
-    rnKey = int(binary[22:27],2)
-    
+    '''Not implemented yet'''
     
 def execSub_er64(binary):
-    rdKey = int(binary[27:32],2)
-    rnKey = int(binary[22:27],2)
-    
+    '''Not implemented yet'''
     
 def execSubs_er64(binary): 
-    rdKey = int(binary[27:32],2)
-    rnKey = int(binary[22:27],2)
-    
+    '''Not implemented yet'''
     

@@ -14,8 +14,8 @@ def getFields_r(binary):
     rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])
     rnKey = utilFunc.getRegKeyByStringKey(binary[22:27])
     rmKey = utilFunc.getRegKeyByStringKey(binary[11:16])
-    rnVal = mem.regFile[rnKey]
-    rmVal = mem.regFile[rmKey]
+    rnVal = utilFunc.getRegValueByStringkey(binary[22:27])
+    rmVal = utilFunc.getRegValueByStringkey(binary[11:16])
     return rdKey, rnKey, rmKey, rnVal, rmVal
 
 
