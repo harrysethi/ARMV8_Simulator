@@ -60,7 +60,19 @@ def execBR(binary):
     utilFunc.finalize_simple(inst)
     
 def execBLR(binary):
-    '''Not implemented yet'''
+    inst='BLR X'
+    rnKey=binary[22:27]
+    address_binary=utilFunc.getRegValueByStringkey(rnKey)
+    regnum=utilFunc.uInt(rnKey)
+    inst+=str(regnum)
+    hexstr = utilFunc.binaryToHexStr(address_binary)
+    if not armdebug.checkIfValidBreakPoint(hexstr):
+        utilFunc.finalize_simple('Instruction aborted. Invalid instruction address in register.')
+        return
+    nextAddr=armdebug.getPC()+4
+    utilFunc.setRegValue(30, utilFunc.intToBinary(nextAddr, 64))
+    utilFunc.branchToAddress(int(hexstr,16))
+    utilFunc.finalize_simple(inst)
     
 def execRET(binary):
     '''Not implemented yet'''
@@ -70,33 +82,12 @@ def execCBZ_32(binary):
     
 def execCBNZ_32(binary):
     CBZClass(binary, 32, False)
-    '''Not implemented yet'''
     
 def execCBZ_64(binary):
     CBZClass(binary, 64, True)
     
 def execCBNZ_64(binary):
     CBZClass(binary, 64, False)
-    '''Not implemented yet'''
-
-'''def testB():
-    binary=utilFunc.hexToBin('17fffffd')
-    execB(binary)
-    binary=utilFunc.hexToBin('14000002')
-    execB(binary)    
-
-def testBCond():
-    utilFunc.set_N_flag()
-    binary=utilFunc.hexToBin('54000024')
-    execBCond(binary)
-    
-testBCond()'''
-    
-'''
-utilFunc.set_Z_flag()
-utilFunc.printAllFlags()
-binary=utilFunc.hexToBin('5400002e')
-execBCond(binary)'''
 
 def CBZClass(binary,width,bool):
     rtKey=binary[-5:]
