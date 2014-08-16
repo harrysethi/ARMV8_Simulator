@@ -17,9 +17,10 @@ def INSTRUCTION_TYPE(binary, i):
             4 : ADD_SUB_SHIFT_REG,
             5 : LOGICAL_SHIFT_REG,
             6 : SHIFT_REGISTER,
-            7 : LOGICAL_IMMEDIATE,
-            8 : PC_RELATIVE,
-            9 : NOP,
+            7 : SHIFT_IMMEDIATE,
+            8 : LOGICAL_IMMEDIATE,
+            9 : PC_RELATIVE,
+            10 : NOP,
         }[i](binary)
     except KeyError:
         i = i
@@ -107,6 +108,15 @@ def SHIFT_REGISTER(binary):
        "10011010110-----001000" : executor_shift.execLsl_r64,
        "00011010110-----001001" : executor_shift.execLsr_r32,
        "10011010110-----001001" : executor_shift.execLsr_r64,
+    }[key](binary)
+    
+def SHIFT_IMMEDIATE(binary):
+    key = binary[0:10]
+    return {
+       "0001001100" : executor_shift.execAsr_i32,
+       "1001001101" : executor_shift.execAsr_i64,
+       "0101001100" : executor_shift.execLslLsr_i32,
+       "1101001101" : executor_shift.execLslLsr_i64,
     }[key](binary)
 
 def PC_RELATIVE(binary):
