@@ -12,7 +12,7 @@ def execB(binary):
     inst ='B OFFSET('
     imm26key=binary[6:32]
     
-    (instpart,offset)=getOffset(imm26key)
+    (instpart,offset)=utilFunc.getOffset(imm26key)
     inst+=instpart+')'
     
     utilFunc.branchWithOffset(offset) #the magic!
@@ -28,7 +28,7 @@ def execBCond(binary):
     inst ='B.'+xx[1]+' OFFSET('
     imm19key=binary[8:27]
     
-    (instpart,offset)=getOffset(imm19key)
+    (instpart,offset)=utilFunc.getOffset(imm19key)
     inst+=instpart+')'
     
     utilFunc.branchWithOffset(offset) #the magic!
@@ -38,7 +38,7 @@ def execBL(binary):
     inst='BL OFFSET('
     imm26key=binary[-26:]
     
-    (instpart,offset)=getOffset(imm26key)
+    (instpart,offset)=utilFunc.getOffset(imm26key)
     inst+=instpart+')'
     
     nextAddr=armdebug.getPC()+4
@@ -112,7 +112,7 @@ def CBZClass(binary,width,bool):
     inst+=str(regnum)+', OFFSET('
     imm19Key=binary[8:27]
 
-    (instpart,offset)=getOffset(imm19Key)
+    (instpart,offset)=utilFunc.getOffset(imm19Key)
     inst+=instpart+')'
     
     regValue=getRegValueByStringkey(rtKey)
@@ -124,17 +124,3 @@ def CBZClass(binary,width,bool):
         if regValue!='0'*width:
             utilFunc.branchWithOffset(offset)
     utilFunc.finalize_simple(inst)
-
-def getOffset(immkey):
-    immkey=utilFunc.signExtend(immkey+'00', 64) #times 4 and 64 bits
-    sign=immkey[0]
-    offset=''
-    inst=''
-    if sign=='1':
-        immkey=utilFunc.twosComplement(immkey, 64)
-        inst+='-'
-        offset=-int(immkey, 2)
-    else:
-        offset=int(immkey, 2)
-    inst+=str(int(immkey, 2))
-    return (inst, offset)

@@ -203,15 +203,26 @@ def zeroExtend(binary, N):
 
 def extend(x, N, unsigned):
     if(unsigned == '1'):
-       return zeroExtend(x,N)
+        return zeroExtend(x,N)
     else:
-       return signExtend(x,N)
+        return signExtend(x,N)
 
 def branchWithOffset(offset): #signed offset
     armdebug.setPC((armdebug.getPC()+offset-4)) #the magic! #-4 for the current instruction
     
 def branchToAddress(hexint):#give the exact address in int where to branch
     armdebug.setPC(hexint-4) #the magic again! #-4 for the current instruction
+    
+def PCwithOffset(offset):
+    return armdebug.getPC()+offset#don't change this, it is no 4 only!!! 
+    #why this? because the offset is always given from the current instruction
+    
+def PCwithPageOffset(N,offset):
+    PCint=armdebug.getPC()
+    PCbin=intToBinary(PCint, 64)
+    PCbinModified=PCbin[0:52]+'0'*N
+    PCnow=int(PCbinModified,2)
+    return PCnow+offset
     
 def conditionHolds(bits_four):
     #print 'condHolds'
@@ -253,3 +264,31 @@ def conditionHolds(bits_four):
         #print '8'
     #print cond
     return (result, cond)
+
+def getOffset(immkey):
+    immkey=signExtend(immkey+'00', 64) #times 4 and 64 bits
+    sign=immkey[0]
+    offset=''
+    inst=''
+    if sign=='1':
+        immkey=twosComplement(immkey, 64)
+        inst+='-'
+        offset=-int(immkey, 2)
+    else:
+        offset=int(immkey, 2)
+    inst+=str(int(immkey, 2))
+    return (inst, offset)
+
+def getOffsetWithoutTimes(immkey):
+    immkey=signExtend(immkey, 64) #no times 4 and 64 bits
+    sign=immkey[0]
+    offset=''
+    inst=''
+    if sign=='1':
+        immkey=twosComplement(immkey, 64)
+        inst+='-'
+        offset=-int(immkey, 2)
+    else:
+        offset=int(immkey, 2)
+    inst+=str(int(immkey, 2))
+    return (inst, offset)
