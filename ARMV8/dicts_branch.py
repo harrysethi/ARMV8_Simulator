@@ -22,11 +22,11 @@ def UNCONDITIONAL_BRANCH_IMMEDIATE(binary):
     }[key](binary)
     
 def UNCONDITIONAL_BRANCH_REGISTER(binary):
-    key = binary[0:21]+"-"*5+binary[25:30]
+    key = binary[0:23]+"-"*5+binary[28:33]
     return {
-       "110101100001111000000-----00000" : executor_branch.execBR,
-       "110101100011111000000-----00000" : executor_branch.execBLR,
-       "110101100101111000000-----00000" : executor_branch.execRET,
+       "1101011000011111000000-----00000" : executor_branch.execBR,
+       "1101011000111111000000-----00000" : executor_branch.execBLR,
+       "1101011001011111000000-----00000" : executor_branch.execRET,
     }[key](binary)
     
 def CONDITIONAL_BRANCH_IMMEDIATE(binary):
