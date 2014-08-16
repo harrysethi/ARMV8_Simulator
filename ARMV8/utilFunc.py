@@ -62,17 +62,26 @@ def resetInstrFlag():
     
 #sets the register value, prints the inst, sets the instr flag
 def finalize(rdKey, val, instr):
-    assert rdKey>=0 and rdKey<=31
-    if(rdKey != 31):
-        #ignoring the result - zero register        
-        del mem.regFile[rdKey]
-        mem.regFile.insert(rdKey,val)
+    setRegValue(rdKey, val)
     finalize_simple(instr)
     
 def finalize_simple(instr):
     print instr
     const.FLAG_INST_EXECUTED="1"
+
+#val is 64 bit string to be stored in reg with rdkey
+def setRegValue(rdKey, val):
+    assert rdKey>=0 and rdKey<=31
+    if(rdKey != 31):
+        #ignoring the result - zero register        
+        del mem.regFile[rdKey]
+        mem.regFile.insert(rdKey,val)
+        
+#utility function that takes num int convert it into binary of size N
+def intToBinary(num,N):
+    str(bin(num))[2:].zfill(64)
     
+        
 #utility function used by all add-sub instructions
 def addSub(op1,op2,sub_op,N,setFlags):
     c_in = '0'

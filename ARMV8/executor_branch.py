@@ -51,7 +51,14 @@ def execBCond(binary):
     utilFunc.finalize_simple(inst)
     
 def execBL(binary):
-    '''Not implemented yet'''
+    inst='BL OFFSET('
+    imm26key=binary[-26:]
+    (instpart,offset)=getOffset(imm26key)
+    inst+=instpart+')'
+    nextAddr=armdebug.getPC()+4
+    utilFunc.setRegValue(30, utilFunc.intToBinary(nextAddr, 64))
+    utilFunc.branchWithOffset(offset)
+    utilFunc.finalize_simple(inst)
     
 def execBR(binary):
     inst = 'BR X'
@@ -60,7 +67,7 @@ def execBR(binary):
     regnum=utilFunc.uInt(rnKey)
     inst+=str(regnum)
     hexstr = utilFunc.binaryToHexStr(address_binary)
-    if not armdebug.checkIfValidBreakPoint2(hexstr):
+    if not armdebug.checkIfValidBreakPoint(hexstr):
         utilFunc.finalize_simple('Instruction aborted. Invalid instruction address in register.')
         return
     utilFunc.branchToAddress(int(hexstr,16))
@@ -137,3 +144,17 @@ def CBZClass(binary,width,bool):
         if regValue!='0'*width:
             utilFunc.branchWithOffset(offset)
     utilFunc.finalize_simple(inst)
+
+def getOffset(immkey):
+    immkey=utilFunc.signExtend(immkey+'00', 64) #times 4 and 64 bits
+    sign=immkey[0]
+    offset=''
+    inst=''
+    if sign=='1':
+        immkey=utilFunc.twosComplement(immkey, 64)
+        inst+='-'
+        offset=-int(immkey, 2)
+    else:
+        offset=int(immkey, 2)
+    inst+=str(int(immkey, 2))
+    return (inst, offset)

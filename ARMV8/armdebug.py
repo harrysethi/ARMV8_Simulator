@@ -36,7 +36,7 @@ def isDebugMode():
     global DEBUG_MODE
     return DEBUG_MODE  
  
-def checkIfValidBreakPoint(givenHexString):
+def checkIfValidBreakPoint2(givenHexString):
     length=parsehelper.getNumOfInst()
     givenHexInt=int(givenHexString, 16)
     prog_counter=getPC()
@@ -47,7 +47,7 @@ def checkIfValidBreakPoint(givenHexString):
     print 'the value here: '+str(ans)
     return ans
 
-def checkIfValidBreakPoint2(givenHexString):
+def checkIfValidBreakPoint(givenHexString):
     startAdd=parsehelper.getStartAddress()
     length=parsehelper.getNumOfInst()
     givenHexInt=int(givenHexString, 16)
