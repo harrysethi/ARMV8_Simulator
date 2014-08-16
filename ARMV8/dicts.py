@@ -7,7 +7,7 @@ import executor_move
 import executor_shift
 import executor_misc
 
-def INSTRUCTION_TYPE(binary,i):
+def INSTRUCTION_TYPE(binary, i):
     try:
         return {
             0 : ADD_SUB_IMMEDIATE,
@@ -22,7 +22,7 @@ def INSTRUCTION_TYPE(binary,i):
             9 : NOP,
         }[i](binary)
     except KeyError:
-        i=i
+        i = i
 
 def ADD_SUB_IMMEDIATE(binary):
     key = binary[0:8] 
@@ -38,7 +38,7 @@ def ADD_SUB_IMMEDIATE(binary):
     }[key](binary)
       
 def ADD_SUB_SHIFT_REG(binary):
-    key = binary[0:8]+"--"+binary[10]
+    key = binary[0:8] + "--" + binary[10]
     return {
        "00001011--0" : executor_addSub.execAdd_sr32,
        "00101011--0" : executor_addSub.execAdds_sr32,
@@ -72,7 +72,7 @@ def LOGICAL_IMMEDIATE(binary):
     }[key](binary)
     
 def LOGICAL_SHIFT_REG(binary):
-    key = binary[0:8]+"--"+binary[10]
+    key = binary[0:8] + "--" + binary[10]
     return {
        "00001010--0" : executor_logical.execAnd_sr32,
        "10001010--0" : executor_logical.execAnd_sr64,
@@ -91,7 +91,7 @@ def MOVE_IMMEDIATE(binary):
     }[key](binary)
     
 def MOVE_REGISTER(binary):
-    key = binary[0:11]+"-"*5+binary[16:27]
+    key = binary[0:11] + "-"*5 + binary[16:27]
     return {
        "00101010000-----00000011111" : executor_move.execMov_r32,
        "10101010000-----00000011111" : executor_move.execMov_r64,
@@ -99,7 +99,7 @@ def MOVE_REGISTER(binary):
 
 
 def SHIFT_REGISTER(binary):
-    key = binary[0:11]+"-"*5+binary[16:22]
+    key = binary[0:11] + "-"*5 + binary[16:22]
     return {
        "00011010110-----001010" : executor_shift.execAsr_r32,
        "10011010110-----001010" : executor_shift.execAsr_r64,
@@ -110,14 +110,14 @@ def SHIFT_REGISTER(binary):
     }[key](binary)
 
 def PC_RELATIVE(binary):
-    key = binary[0]+"--"+binary[3:8]
+    key = binary[0] + "--" + binary[3:8]
     return {       
        "0--10000" : executor_misc.execADR,
        "1--10000" : executor_misc.execADRP,
     }[key](binary)
     
 def NOP(binary):
-    key = binary[0:20]+"-"*7+binary[27:32]
+    key = binary[0:20] + "-"*7 + binary[27:32]
     return {
-       "11010101000000110010"+"-"*7+"11111" : executor_misc.execNOP,
+       "11010101000000110010" + "-"*7 + "11111" : executor_misc.execNOP,
     }[key](binary)
