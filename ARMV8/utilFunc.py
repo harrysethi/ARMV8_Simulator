@@ -202,7 +202,7 @@ def zeroExtend(binary, N):
     return '0'*(N-len(binary))+binary
 
 def extend(x, N, unsigned):
-    if(unsigned == '1'):
+    if(unsigned == 1):
        return zeroExtend(x,N)
     else:
        return signExtend(x,N)

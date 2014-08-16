@@ -133,7 +133,7 @@ def op_er(binary, N, instr,sub_op,setFlags):
     elif(N == 64):
         r = 'x'
     instr += " "+ r + str(rdKey) + ", " + r + str(rnKey) + ", " + r + str(rmkey) + ", "
-    op2 = fetchOp2_er(rmVal, shift, option, instr, N)
+    op2,instr = fetchOp2_er(rmVal, shift, option, instr, N)
     instr += " #" + str(shift)
     to_store = utilFunc.addSub(rnVal, op2, sub_op, N, setFlags).zfill(const.REG_SIZE)
     utilFunc.finalize(rdKey, to_store, instr)
@@ -141,8 +141,6 @@ def op_er(binary, N, instr,sub_op,setFlags):
 #fetches the operand2 for extended register operations
 def fetchOp2_er(rmVal,shift,option,instr,N):
     assert shift >= 0 and shift <= 4
-    unsigned;
-    len;
     if(option == "000"):
         #ExtendType_UXTB
         instr+='UXTB'
@@ -184,7 +182,7 @@ def fetchOp2_er(rmVal,shift,option,instr,N):
         unsigned = 0
         len = 64
     len = min(len,N-shift)
-    return utilFunc.extend(rmVal[N-1-(len-1):N] + '0'*shift, N, unsigned)
+    return utilFunc.extend(rmVal[N-1-(len-1):N] + '0'*shift, N, unsigned), instr
 
     
 
