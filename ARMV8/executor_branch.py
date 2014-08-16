@@ -53,6 +53,13 @@ def execBL(binary):
     '''Not implemented yet'''
     
 def execBR(binary):
+    inst = 'BR X'
+    rnKey=binary[22:27]
+    address_binary=utilFunc.getRegValueByStringkey(rnKey)
+    #address_hex=hex(address_binary,2)
+    print 'inside br, have to branch'
+    utilFunc.finalize_simple(inst)
+    
     '''Not implemented yet'''
     
 def execBLR(binary):

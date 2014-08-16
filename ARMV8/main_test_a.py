@@ -12,10 +12,11 @@ import utilFunc
 def main():
     print "---Started---"
     #"52800102"
-    hexes = ["34000045"]
+    hexes = ["d61f00a0"]
     for hexcode in hexes:
+        print 'inst: '+utilFunc.hexToBin(hexcode)
         resetInstrFlag()
-        utilFunc.set_Z_flag()
+        #utilFunc.set_Z_flag()
         decoder.decodeInstr(hexcode)
     printAllRegs()
     printAllFlags()
