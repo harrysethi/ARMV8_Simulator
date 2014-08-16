@@ -40,10 +40,12 @@ def checkIfValidBreakPoint(givenHexString):
     length=parsehelper.getNumOfInst()
     givenHexInt=int(givenHexString, 16)
     prog_counter=getPC()
+    ans=False
     if (givenHexInt-prog_counter)%4 == 0:
-        if (givenHexInt-prog_counter)/4 < length and int((givenHexInt-prog_counter)/4) >= getCurrentInstNumber():
-            return True
-    return False
+        if (givenHexInt-prog_counter)/4 < length:
+            ans=True
+    print 'the value here: '+str(ans)
+    return ans
 
 def checkIfValidBreakPoint2(givenHexString):
     startAdd=parsehelper.getStartAddress()

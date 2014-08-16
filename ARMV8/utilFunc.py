@@ -196,6 +196,8 @@ def signExtend(binary, N):
 def branchWithOffset(offset): #signed offset
     armdebug.setPC((armdebug.getPC()+offset-4)) #the magic! #-4 for the current instruction
     
+def branchToAddress(hexint):#give the exact address in int where to branch
+    armdebug.setPC(hexint-4) #the magic again! #-4 for the current instruction
     
 def conditionHolds(bits_four):
     #print 'condHolds'

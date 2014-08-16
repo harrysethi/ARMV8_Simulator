@@ -6,6 +6,7 @@ Created on Aug 8, 2014
 
 import utilFunc
 from utilFunc import uInt, signExtend, getRegValueByStringkey
+import armdebug
 
 def execB(binary):
     inst ='B OFFSET('
@@ -56,11 +57,14 @@ def execBR(binary):
     inst = 'BR X'
     rnKey=binary[22:27]
     address_binary=utilFunc.getRegValueByStringkey(rnKey)
-    #address_hex=hex(address_binary,2)
-    print 'inside br, have to branch'
+    regnum=utilFunc.uInt(rnKey)
+    inst+=str(regnum)
+    hexstr = utilFunc.binaryToHexStr(address_binary)
+    if not armdebug.checkIfValidBreakPoint2(hexstr):
+        utilFunc.finalize_simple('Instruction aborted. Invalid instruction address in register.')
+        return
+    utilFunc.branchToAddress(int(hexstr,16))
     utilFunc.finalize_simple(inst)
-    
-    '''Not implemented yet'''
     
 def execBLR(binary):
     '''Not implemented yet'''
