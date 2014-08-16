@@ -195,12 +195,17 @@ def printAllRegs():
 #sign extends it and returns the resulting binary
 def signExtend(binary, N):
     assert len(binary)<=N
-    sign=binary[0] #sign extend!!! whoo!!
-    prepend=''
-    for x in range(N-len(binary)):
-        prepend+=sign
-    binary=prepend+binary
-    return binary
+    return binary[0]*(N-len(binary))+binary
+
+def zeroExtend(binary, N):
+    assert len(binary)<=N
+    return '0'*(N-len(binary))+binary
+
+def extend(x, N, unsigned):
+    if(unsigned == '1'):
+       return zeroExtend(x,N)
+    else:
+       return signExtend(x,N)
 
 def branchWithOffset(offset): #signed offset
     armdebug.setPC((armdebug.getPC()+offset-4)) #the magic! #-4 for the current instruction
