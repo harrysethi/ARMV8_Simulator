@@ -54,6 +54,22 @@ def logical_and(s1, s2):
                 to_return += '1'
     return to_return
 
+# assuming both s1 and s2 have same length    
+def logical_or(s1, s2):
+    to_return = ''
+    if len(s1) != len(s2):
+        print 'Implementation error. Lengths not equal'
+        exit(1)
+    else:
+        for x in range(len(s1)):
+            if s1[x] != s2[x]:
+                to_return += '1'
+            elif s1[x] == '1':
+                to_return += '1'
+            else:
+                to_return += '0'
+    return to_return
+
 
 def resetInstrFlag():
     const.FLAG_INST_EXECUTED = "0"

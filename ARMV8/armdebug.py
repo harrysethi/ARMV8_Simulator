@@ -182,6 +182,9 @@ def parseCommand(command):
         executeDebuggerHelp()
         return
     
+    if command.startswith('watch'):
+        executeWatch()
+        return 
     else:
         print 'Not supported input (yet)!'
     
@@ -366,3 +369,6 @@ def executeDebuggerHelp():
     print '10. exit: Exits the program(with the debugger)'
     print '------------------------------------'
     print ''
+    
+def executeWatch():
+    return

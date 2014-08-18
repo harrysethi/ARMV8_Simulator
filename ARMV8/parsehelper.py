@@ -322,6 +322,7 @@ def return_parsed_section(filename, secname):
         
         finalreturn= arrangeData(toreturn, isLittleEndian(elffile))
         setNumOfInst(len(finalreturn))
+        print finalreturn
         return finalreturn
             
 
@@ -378,7 +379,7 @@ def getNumOfBytes():
 if __name__ == '__main__':
         filename = sys.argv[1]        
         #process3(filename)
-        print return_parsed_section(filename,'.data')
+        print return_parsed_section(filename,'.text')
         print getStartAddress()
         print getNumOfInst()
         print getNumOfBytes()

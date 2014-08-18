@@ -48,6 +48,7 @@ if __name__ == '__main__':
             #here we first check for global data
             global_data.parseDataSection(filename)
             hexes=parsehelper.return_parsed_section(filename,'.text')
+            #print hexes
         except:
             print "He's dead Larry." 
             print "The inputfile seems to be a not compatibe ARMv8 elf."

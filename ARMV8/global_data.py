@@ -85,4 +85,4 @@ def saveAllToMemoryModel():
         #x has the data
         mem.storeWordToMemory(hex(curAddrInt), x)
         curAddrInt+=4
-    mem.printMemoryState()
+    #mem.printMemoryState()

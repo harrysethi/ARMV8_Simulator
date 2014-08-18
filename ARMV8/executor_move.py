@@ -49,8 +49,28 @@ def execMov_r32(binary):
 def execMov_r64(binary):
     mov_reg(binary, 64)
                            
+                           
+def mov_bmi(binary, N):
+    inst = 'MOV '
+    rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])
+    if(N == 32):
+        r = 'w'
+    else:
+        r = 'x'
+    inst += r + str(rdKey)
+    
+    
+    immr = binary[10:16]
+    imms = binary[16:22]
+    immN = binary[9]
+    
+    imm, temp = utilFunc.decodeBitMasks(immN, imms, immr, N)
+    inst += ', #' + utilFunc.binaryToHexStr(imm)
+    result = utilFunc.logical_or('0'*N,imm).zfill(const.REG_SIZE)
+    utilFunc.finalize(rdKey, result, inst)
+    
 def execMov_bmi32(binary):
-    '''Not implemented yet'''
+    mov_bmi(binary, 32)
     
 def execMov_bmi64(binary):
-    '''Not implemented yet'''
+    mov_bmi(binary, 64)
