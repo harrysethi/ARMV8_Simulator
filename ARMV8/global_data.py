@@ -5,6 +5,7 @@ Created on Aug 18, 2014
 '''
 
 import parsehelper
+import mem
 
 startAdd=''
 numOfData=0
@@ -36,6 +37,7 @@ def getNumOfBytes():
     return getNumOfData()*4
     
 def hasDataInData():
+    global hexes
     return hexes==None or hexes==[]
 
 def parseDataSection(filename):
@@ -44,6 +46,9 @@ def parseDataSection(filename):
     if hexes:
         setStartAddress(parsehelper.getStartAddress())
         setNumOfData(parsehelper.getNumOfInst())
+        #print hexes
+        #print getStartAddress()
+        saveAllToMemoryModel()
     
 def checkIfValidDataAddress(givenHexString):
     startAdd=getStartAddress()
@@ -65,9 +70,19 @@ def getDataIndexFromValidHexString(givenHexString): #starts at index 0
 #call only when valid data adddress
 def loadDataFromData(givenHexString, wordlength):
     assert wordlength==1 or wordlength==2
+    global hexes
     if checkIfValidDataAddress(givenHexString):
         num=getDataIndexFromValidHexString(givenHexString)
         if wordlength==1 :  return hexes[num]
         elif num+1<getNumOfData(): return hexes[num]+hexes[num+1]#just concatenating hexstrings will have to do conversion
     else:
         return 'trap'
+
+def saveAllToMemoryModel():
+    global hexes
+    curAddrInt=int(getStartAddress(),16)
+    for x in hexes:
+        #x has the data
+        mem.storeWordToMemory(hex(curAddrInt), x)
+        curAddrInt+=4
+    mem.printMemoryState()
