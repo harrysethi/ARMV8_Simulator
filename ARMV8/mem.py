@@ -16,12 +16,12 @@ watchReg = list(False for i in range(regNum))
 
 
 def setWatchForReg(index):
-    del regFile[index]
-    regFile[index]=True
+    del watchReg[index]
+    watchReg[index]=True
     
 def resetWatchForReg(index):
-    del regFile[index]
-    regFile[index]=False    
+    del watchReg[index]
+    watchReg[index]=False    
 
 def setGlobalDataMemory(startAddress, list):
     pass
@@ -34,3 +34,6 @@ def storeWordToMemory(address, data):
     
 def printMemoryState():
     print memory_model
+    
+def printWatchStateAll():
+    print watchReg

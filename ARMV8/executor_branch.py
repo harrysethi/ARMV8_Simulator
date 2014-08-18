@@ -80,7 +80,7 @@ def execRET(binary):
     address_binary=utilFunc.getRegValueByStringkey(rnKey)
     regnum=utilFunc.uInt(rnKey)
     inst+=str(regnum)
-    print 'address binary: '+str(address_binary)
+    #print 'address binary: '+str(address_binary)
     hexstr = utilFunc.binaryToHexStr(address_binary)
     if not armdebug.checkIfValidBreakPoint(hexstr):
         utilFunc.finalize_simple('Instruction aborted. Invalid instruction address in register.')
