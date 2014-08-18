@@ -158,6 +158,7 @@ def twosComplement(x, N):
     return addSub('0' * N, x, '1', N, '0')
 
 def binaryToHexStr(x):
+    print 'x '+str(x)
     x = str(hex(int(x, 2)))
     if(x[-1] == 'L'):
         x = x[0:len(x) - 1]

@@ -68,7 +68,7 @@ def getDataIndexFromValidHexString(givenHexString): #starts at index 0
     return int((givenHexInt-startAddInt)/4)
 
 #call only when valid data adddress
-def loadDataFromData(givenHexString, wordlength):
+def loadWordFromData(givenHexString, wordlength):
     assert wordlength==1 or wordlength==2
     global hexes
     if checkIfValidDataAddress(givenHexString):
@@ -85,4 +85,4 @@ def saveAllToMemoryModel():
         #x has the data
         mem.storeWordToMemory(hex(curAddrInt), x)
         curAddrInt+=4
-    #mem.printMemoryState()
+    mem.printMemoryState()
