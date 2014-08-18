@@ -170,7 +170,8 @@ def negate(x):
     return to_ret
 
 def twosComplement(x, N):
-    return addSub('0' * N, x, '1', N, '0')
+    result, isSp = addSub(0,'0' * N, x, '1', N, '0')
+    return result
 
 def binaryToHexStr(x):
     #print 'x '+str(x)

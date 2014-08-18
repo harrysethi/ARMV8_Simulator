@@ -33,7 +33,7 @@ def helper_l():
 
 #---Load Register (Literal)---
 def execLDR_l32(binary):
-    
+    pass
 
 def execLDR_l64(binary):
     '''Not implemented yet'''

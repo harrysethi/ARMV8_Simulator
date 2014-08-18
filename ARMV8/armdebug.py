@@ -419,7 +419,7 @@ def saveAllToMemoryModel():
     curAddrInt=int(parsehelper.getStartAddress(),16)
     for x in hexes:
         #x has the data
-        mem.storeWordToMemory(hex(curAddrInt), x)
+        mem.storeWordToMemory(curAddrInt, x)
         curAddrInt+=4
     #print 'memmmm: '
     mem.printMemoryState()
