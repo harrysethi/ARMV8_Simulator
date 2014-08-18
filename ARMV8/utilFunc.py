@@ -29,6 +29,7 @@ def ror(s, i):
 def getRegValueByStringkey(key):  
     key = int(key, 2)
     assert key >= 0 and key <= 31
+    printAllRegs()
     if key != 31:
         return mem.regFile[key]
     else:
@@ -96,7 +97,8 @@ def intToBinary(num, N):
     x = "{0:b}".format(num)
     if(x[0] == '-'):
         x = (x[1:len(x)]).zfill(N)
-        return twosComplement(x,N)
+        x = twosComplement(x,N)
+    return x.zfill(N)
     
         
 # utility function used by all add-sub instructions
