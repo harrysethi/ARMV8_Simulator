@@ -12,7 +12,7 @@ import utilFunc
 def main():
     print "---Started---"
     #"52800102"
-    hexes = ["d63f00a0"]
+    hexes = ['d2800041', '94000002', 'd2800040', '52800063', 'd65f03c0']
     for hexcode in hexes:
         print 'inst: '+utilFunc.hexToBin(hexcode)
         resetInstrFlag()

@@ -183,7 +183,7 @@ def parseCommand(command):
         return
     
     if command.startswith('watch'):
-        executeWatch()
+        executeWatch(command.split()[1])
         return 
     else:
         print 'Not supported input (yet)!'
@@ -370,5 +370,6 @@ def executeDebuggerHelp():
     print '------------------------------------'
     print ''
     
-def executeWatch():
+def executeWatch(regInfo):
+    
     return
