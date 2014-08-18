@@ -49,7 +49,7 @@ def execBL(binary):
 def execBR(binary):
     inst = 'BR X'
     rnKey=binary[22:27]
-    address_binary=utilFunc.getRegValueByStringkey(rnKey)
+    address_binary=utilFunc.getRegValueByStringkey(rnKey, '0')
     regnum=utilFunc.uInt(rnKey)
     inst+=str(regnum)
     hexstr = utilFunc.binaryToHexStr(address_binary)
@@ -62,7 +62,7 @@ def execBR(binary):
 def execBLR(binary):
     inst='BLR X'
     rnKey=binary[22:27]
-    address_binary=utilFunc.getRegValueByStringkey(rnKey)
+    address_binary=utilFunc.getRegValueByStringkey(rnKey, '0')
     regnum=utilFunc.uInt(rnKey)
     inst+=str(regnum)
     hexstr = utilFunc.binaryToHexStr(address_binary)
@@ -77,7 +77,7 @@ def execBLR(binary):
 def execRET(binary):
     inst = 'RET X'
     rnKey=binary[22:27]
-    address_binary=utilFunc.getRegValueByStringkey(rnKey)
+    address_binary=utilFunc.getRegValueByStringkey(rnKey, '0')
     regnum=utilFunc.uInt(rnKey)
     inst+=str(regnum)
     #print 'address binary: '+str(address_binary)
@@ -116,7 +116,7 @@ def CBZClass(binary,width,bool):
     (instpart,offset)=utilFunc.getOffset(imm19Key)
     inst+=instpart+')'
     
-    regValue=getRegValueByStringkey(rtKey)
+    regValue=getRegValueByStringkey(rtKey, '0')
     regValue=regValue[0:width]#since CBZ_32
     if bool:
         if regValue=='0'*width:

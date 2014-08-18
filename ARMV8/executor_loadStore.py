@@ -6,9 +6,34 @@ Created on Aug 8, 2014
 import const
 import utilFunc
 
+def helper_l():
+    rtKey = utilFunc.getRegKeyByStringKey(binary[27:32])
+    imm19 = binary[8:27]
+    opc = binary[0:2]
+    signed = false
+    
+    if(opc == '00'):
+        size = 4
+    elif(opc == '01'):
+        size = 8
+        
+    offset = utilFunc.signExtend(imm19+'00',64)
+        
+    address = armdebug.getPC() + offset
+    #Data size : size*8
+    
+    if(memOp == 'Load'):
+        #data = mem.
+        '''write function-------------------------------------'''
+    
+    if(signed):
+        data = utilFunc.signExtend(data,64)
+    utilFunc.setRegValue(rtKey,data, '0')
+    
+
 #---Load Register (Literal)---
 def execLDR_l32(binary):
-    '''Not implemented yet'''
+    
 
 def execLDR_l64(binary):
     '''Not implemented yet'''

@@ -80,10 +80,10 @@ def execAnd_sr64(binary):
     
     inst += 'x' + str(rdKey) + ', x' + str(rnKey) + ', x' + str(rmKey) + ', '
     
-    rnValue = utilFunc.getRegValueByStringkey(binary[22:27])
+    rnValue = utilFunc.getRegValueByStringkey(binary[22:27], '0')
     immKey = binary[16:22]
     immvalue = int(immKey, 2)  # amount
-    rmValue = utilFunc.getRegValueByStringkey(binary[11:16])
+    rmValue = utilFunc.getRegValueByStringkey(binary[11:16], '0')
     
     shifttype = binary[8:10]
     
