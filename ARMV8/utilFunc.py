@@ -86,10 +86,19 @@ def finalize_simple(instr):
 # val is 64 bit string to be stored in reg with rdkey
 def setRegValue(rdKey, val):
     assert rdKey >= 0 and rdKey <= 31
+    #assuming rdkey is being changed, we call a method here which check for the watch method
+    ifWatch(rdKey) #ask about 31 from partner
     if(rdKey != 31):
         # ignoring the result - zero register        
         del mem.regFile[rdKey]
         mem.regFile.insert(rdKey, val)
+        
+def ifWatch(rdKey):
+    if mem.isWatchSet(rdKey):
+        mem.resetWatchForReg(rdKey)
+        #set somtehing global here which pauses everything on the planet!
+        
+    pass
         
 # utility function that takes num int convert it into binary of size N
 def intToBinary(num, N):

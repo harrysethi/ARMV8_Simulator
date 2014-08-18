@@ -219,11 +219,13 @@ def executeRUN():
 def executeBreak(address): 
     #print 'You typed address: '+address
     #assuming should start with address
+    '''
     if len(address)!=10:
-        print 'Not valid hex address for current state'
+        print 'Not valid hex address for current state.'
         return
-    myhex=re.findall(r'0[x|X][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]', address)
-    print myhex
+    '''
+    myhex=re.findall(r'0[x|X][0-9a-fA-F]+', address)
+    print myhex #here so that we know where the bkpoint has been set
     if myhex:
         #print mylist[0]
         if(checkIfValidBreakPoint(myhex[0])):
@@ -241,13 +243,13 @@ def executeBreak(address):
 def executeDel(address): 
     #print 'You typed address: '+address
     #assuming should start with address
-    
+    '''
     if len(address)!=10:
         print 'Not valid hex address for current state'
         return
-    
-    myhex=re.findall(r'0[x|X][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]', address)
-    print myhex
+    '''
+    myhex=re.findall(r'0[x|X][0-9a-fA-F]+', address)
+    print myhex #here so that we know where the bkpoint has been set
     if myhex:
         #print mylist[0]
         if(checkIfValidBreakPoint(myhex[0])):
@@ -272,9 +274,9 @@ def executeC():
         #print 'X: '+str(x)
         executeNextInst()
         x=getCurrentInstNumber()
-        print 'no breakpoints encountered. instructions exhausted!!'
     if (x==len(getHexes())):
-        return 
+        print 'no breakpoints encountered. instructions exhausted!!'
+        return
     print "Arrived at the break point. Type 's' or 'run'..."
     
 def executePrint(command):

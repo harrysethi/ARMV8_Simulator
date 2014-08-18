@@ -21,7 +21,16 @@ def setWatchForReg(index):
     
 def resetWatchForReg(index):
     del watchReg[index]
-    watchReg[index]=False    
+    watchReg[index]=False
+    
+def printWatchStateAll():
+    print watchReg
+    
+#regKey should be the correct index of the register 0 to 31
+#watch on stack pointer too?
+def isWatchSet(regKey):
+    return watchReg[regKey]
+    pass
 
 def setGlobalDataMemory(startAddress, list):
     pass
@@ -35,5 +44,3 @@ def storeWordToMemory(address, data):
 def printMemoryState():
     print memory_model
     
-def printWatchStateAll():
-    print watchReg
