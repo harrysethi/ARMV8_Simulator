@@ -29,7 +29,6 @@ def ror(s, i):
 def getRegValueByStringkey(key):  
     key = int(key, 2)
     assert key >= 0 and key <= 31
-    printAllRegs()
     if key != 31:
         return mem.regFile[key]
     else:
