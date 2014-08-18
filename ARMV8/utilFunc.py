@@ -77,7 +77,10 @@ def setRegValue(rdKey, val):
         
 # utility function that takes num int convert it into binary of size N
 def intToBinary(num, N):
-    return str(bin(num))[2:].zfill(64)
+    x = "{0:b}".format(num)
+    if(x[0] == '-'):
+        x = (x[1:len(x)]).zfill(N)
+        return twosComplement(x,N)
     
         
 # utility function used by all add-sub instructions
@@ -290,3 +293,31 @@ def getOffsetWithoutTimes(immkey):
         offset=int(immkey, 2)
     inst+=str(int(immkey, 2))
     return (inst, offset)
+
+def decodeBitMasks(immN, imms, immr, M):
+    len = highestSetBit(immN+negate(imms))
+    levels = zeroExtend('1'*len, 6)
+    s = uInt(logical_and(imms, levels))
+    r = uInt(logical_and(immr, levels))
+    diff = s-r
+    esize = 1<<len
+    d = uInt(intToBinary(diff, len))
+    welem = zeroExtend('1'*(s+1), esize)
+    telem = zeroExtend('1'*(d+1), esize)
+    wmask = replicate(ror(welem, r), M)
+    tmask = replicate(telem, M)
+    return wmask,tmask
+
+def replicate(x, N):
+    while(len(x)<N):
+        x = x+x
+    return x
+    
+    
+def highestSetBit(x):
+    i = 0
+    for c in x:
+        if(c == '1'):
+            return len(x)-i-1
+        i = i+1
+    return -1
