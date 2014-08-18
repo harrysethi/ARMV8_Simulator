@@ -26,10 +26,10 @@ def ror(s, i):
 
 # gives 64 bit, truncate when using
 # key should be 0 to 31 in binary string
-def getRegValueByStringkey(key):  
+def getRegValueByStringkey(key, isSp):
     key = int(key, 2)
     assert key >= 0 and key <= 31
-    if key != 31:
+    if key != 31 or isSp == '1':
         return mem.regFile[key]
     else:
         return '0' * 64
@@ -75,8 +75,8 @@ def resetInstrFlag():
     const.FLAG_INST_EXECUTED = "0"
     
 # sets the register value, prints the inst, sets the instr flag
-def finalize(rdKey, val, instr):
-    setRegValue(rdKey, val)
+def finalize(rdKey, val, instr, isSp):
+    setRegValue(rdKey, val, isSp)
     finalize_simple(instr)
     
 def finalize_simple(instr):
@@ -84,9 +84,9 @@ def finalize_simple(instr):
     const.FLAG_INST_EXECUTED = "1"
 
 # val is 64 bit string to be stored in reg with rdkey
-def setRegValue(rdKey, val):
+def setRegValue(rdKey, val, isSp):
     assert rdKey >= 0 and rdKey <= 31
-    if(rdKey != 31):
+    if(rdKey != 31 or isSp == '1'):
         # ignoring the result - zero register        
         del mem.regFile[rdKey]
         mem.regFile.insert(rdKey, val)
@@ -101,7 +101,7 @@ def intToBinary(num, N):
     
         
 # utility function used by all add-sub instructions
-def addSub(op1, op2, sub_op, N, setFlags):
+def addSub(rdKey, op1, op2, sub_op, N, setFlags):
     c_in = '0'
     if(sub_op == '1'):
         op2 = negate(op2)
@@ -133,7 +133,11 @@ def addSub(op1, op2, sub_op, N, setFlags):
         else:
             set_V_flag()
     
-    return result.zfill(N)
+    if(rdKey == 31 and setFlags == '0'):
+        isSp = '1'
+    else:
+        isSp = '0'
+    return result.zfill(N), isSp
 
 def uInt(x):
     return int(x, 2)
@@ -207,8 +211,9 @@ def printAllFlags():
 def printAllRegs():
     i = 0
     for x in mem.regFile:
-        print str(i).zfill(2) + ": " + x
+        print 'R'+str(i).zfill(2) + ": " + x
         i = i + 1
+    print 'R31: denotes SP'
 
 # usage give a binary of length <=N
 # sign extends it and returns the resulting binary

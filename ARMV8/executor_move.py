@@ -29,19 +29,19 @@ def mov_imm(binary, instr, inverted, N):
     if(inverted == '1'):
         result = utilFunc.negate(result)
     instr = instr + str(rdKey)+", #"+utilFunc.binaryToHexStr(result)
-    utilFunc.finalize(rdKey, result.zfill(const.REG_SIZE), instr)
+    utilFunc.finalize(rdKey, result.zfill(const.REG_SIZE), instr, '0')
 
 def mov_reg(binary, N):
     rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])
     rmKey = utilFunc.getRegKeyByStringKey(binary[11:16])
-    rmVal = utilFunc.getRegValueByStringkey(binary[11:16])
+    rmVal = utilFunc.getRegValueByStringkey(binary[11:16], '0')
     if(N == 32):
         rmVal = rmVal[32:64]
         r = 'w'
     elif(N == 64):
         r = 'x'
     instr = "MOV "+r+str(rdKey)+", "+r+str(rmKey)
-    utilFunc.finalize(rdKey, rmVal.zfill(const.REG_SIZE), instr)
+    utilFunc.finalize(rdKey, rmVal.zfill(const.REG_SIZE), instr, '0')
 
 def execMov_r32(binary):
     mov_reg(binary, 32)
@@ -67,7 +67,7 @@ def mov_bmi(binary, N):
     imm, temp = utilFunc.decodeBitMasks(immN, imms, immr, N)
     inst += ', #' + utilFunc.binaryToHexStr(imm)
     result = utilFunc.logical_or('0'*N,imm).zfill(const.REG_SIZE)
-    utilFunc.finalize(rdKey, result, inst)
+    utilFunc.finalize(rdKey, result, inst, '1')
     
 def execMov_bmi32(binary):
     mov_bmi(binary, 32)

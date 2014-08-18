@@ -5,7 +5,7 @@ Created on Aug 8, 2014
 '''
 
 regNum=31
-
+#31st register is used for SP
 regFile = list('0'*64 for i in range(32))
 #flags-order: n,z,c,v
 flagFile = list('0' for i in range(4))

@@ -42,7 +42,7 @@ def execBL(binary):
     inst+=instpart+')'
     
     nextAddr=armdebug.getPC()+4
-    utilFunc.setRegValue(30, utilFunc.intToBinary(nextAddr, 64))
+    utilFunc.setRegValue(30, utilFunc.intToBinary(nextAddr, 64), '0')
     utilFunc.branchWithOffset(offset)
     utilFunc.finalize_simple(inst)
     
@@ -70,7 +70,7 @@ def execBLR(binary):
         utilFunc.finalize_simple('Instruction aborted. Invalid instruction address in register.')
         return
     nextAddr=armdebug.getPC()+4
-    utilFunc.setRegValue(30, utilFunc.intToBinary(nextAddr, 64))
+    utilFunc.setRegValue(30, utilFunc.intToBinary(nextAddr, 64), '0')
     utilFunc.branchToAddress(int(hexstr,16))
     utilFunc.finalize_simple(inst)
     
