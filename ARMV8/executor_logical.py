@@ -12,7 +12,7 @@ def op_i(binary, N):
     inst = 'AND '
     rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])
     rnKey = utilFunc.getRegKeyByStringKey(binary[22:27])
-    rnValue = utilFunc.getRegValueByStringkey(binary[22:27])
+    rnValue = utilFunc.getRegValueByStringkey(binary[22:27], '0')
     if(N == 32):
         r = 'w'
         rnValue = rnValue[32:64]
@@ -28,7 +28,7 @@ def op_i(binary, N):
     imm, temp = utilFunc.decodeBitMasks(immN, imms, immr, N)
     inst += ', #' + str(int(imm,2))
     result = utilFunc.logical_and(rnValue,imm).zfill(const.REG_SIZE)
-    utilFunc.finalize(rdKey, result, inst)
+    utilFunc.finalize(rdKey, result, inst, '1')
 
 def execAnd_i32(binary):
     op_i(binary, 32)
@@ -46,10 +46,10 @@ def execAnd_sr32(binary):
     
     inst += 'w' + str(rdKey) + ', w' + str(rnKey) + ', w' + str(rmKey) + ', '    
     
-    rnValue = utilFunc.getRegValueByStringkey(binary[22:27])
+    rnValue = utilFunc.getRegValueByStringkey(binary[22:27], '0')
     immKey = binary[16:22]
     immvalue = int(immKey, 2)  # amount
-    rmValue = utilFunc.getRegValueByStringkey(binary[11:16])
+    rmValue = utilFunc.getRegValueByStringkey(binary[11:16], '0')
     
     shifttype = binary[8:10]
     
@@ -69,7 +69,7 @@ def execAnd_sr32(binary):
         inst += 'ROR'
     inst += ' #' + str(immvalue)
     to_store = utilFunc.logical_and(temp, rnValue[32:64]).zfill(const.REG_SIZE)
-    utilFunc.finalize(rdKey, to_store, inst)
+    utilFunc.finalize(rdKey, to_store, inst, '0')
     
 def execAnd_sr64(binary):
     inst = 'AND '
@@ -103,5 +103,5 @@ def execAnd_sr64(binary):
         inst += 'ROR'
     inst += ' #' + str(immvalue)
     to_store = utilFunc.logical_and(temp, rnValue[0:64]).zfill(const.REG_SIZE)
-    utilFunc.finalize(rdKey, to_store, inst)
+    utilFunc.finalize(rdKey, to_store, inst, '0')
     

@@ -9,7 +9,7 @@ import const
 def op_i(binary, N, instr, sub_op, setFlags):
     rdKey = utilFunc.getRegKeyByStringKey(binary[27:32])
     rnKey = utilFunc.getRegKeyByStringKey(binary[22:27])
-    rnVal = utilFunc.getRegValueByStringkey(binary[22:27])
+    rnVal = utilFunc.getRegValueByStringkey(binary[22:27],'1')
     if(N == 32):
         rnVal = rnVal[32:64]
         r = 'w'
@@ -25,8 +25,8 @@ def op_i(binary, N, instr, sub_op, setFlags):
         imm12 = (imm12 + '0' * 12).zfill(N)
         instr = instr + " #12"
         
-    to_store = utilFunc.addSub(rnVal, imm12, sub_op, N, setFlags).zfill(const.REG_SIZE)    
-    utilFunc.finalize(rdKey, to_store, instr)
+    to_store, isSp = utilFunc.addSub(rdKey, rnVal, imm12, sub_op, N, setFlags)    
+    utilFunc.finalize(rdKey, to_store.zfill(const.REG_SIZE), instr, isSp)
 
 def execAdd_i32(binary):
     op_i(binary, 32, "ADD", '0', '0')
@@ -74,8 +74,8 @@ def op_sr(binary, N, instr, sub_op, setFlags):
     imm6 = binary[16:22]
     imm6Val = int(imm6, 2)
     
-    rnVal = utilFunc.getRegValueByStringkey(binary[22:27])
-    rmVal = utilFunc.getRegValueByStringkey(binary[11:16])
+    rnVal = utilFunc.getRegValueByStringkey(binary[22:27], '0')
+    rmVal = utilFunc.getRegValueByStringkey(binary[11:16], '0')
     if(N == 32):
         rnVal = rnVal[32:64]
         rmVal = rmVal[32:64]
@@ -86,8 +86,8 @@ def op_sr(binary, N, instr, sub_op, setFlags):
     instr += " " + r + str(rdKey) + ", " + r + str(rnKey) + ", " + r + str(rmkey) + ", "
     op2, instr = fetchOp2_sr(rmVal, shiftType, imm6Val, instr)
     instr += " #" + str(imm6Val)
-    to_store = utilFunc.addSub(rnVal, op2, sub_op, N, setFlags).zfill(const.REG_SIZE)
-    utilFunc.finalize(rdKey, to_store, instr)
+    to_store,isSp = utilFunc.addSub(rdKey, rnVal, op2, sub_op, N, setFlags) #isSp ignored
+    utilFunc.finalize(rdKey, to_store.zfill(const.REG_SIZE), instr, '0')
 
 def execAdd_sr32(binary):
     op_sr(binary, 32, "ADD", '0', '0')
@@ -122,8 +122,8 @@ def op_er(binary, N, instr, sub_op, setFlags):
     imm3 = binary[19:22]
     shift = int(imm3, 2)
     
-    rnVal = utilFunc.getRegValueByStringkey(binary[22:27])
-    rmVal = utilFunc.getRegValueByStringkey(binary[11:16])
+    rnVal = utilFunc.getRegValueByStringkey(binary[22:27], '1')
+    rmVal = utilFunc.getRegValueByStringkey(binary[11:16], '0')
     if(N == 32):
         rnVal = rnVal[32:64]
         rmVal = rmVal[32:64]
@@ -133,8 +133,8 @@ def op_er(binary, N, instr, sub_op, setFlags):
     instr += " " + r + str(rdKey) + ", " + r + str(rnKey) + ", " + r + str(rmkey) + ", "
     op2, instr = fetchOp2_er(rmVal, shift, option, instr, N)
     instr += " #" + str(shift)
-    to_store = utilFunc.addSub(rnVal, op2, sub_op, N, setFlags).zfill(const.REG_SIZE)
-    utilFunc.finalize(rdKey, to_store, instr)
+    to_store, isSp = utilFunc.addSub(rdKey, rnVal, op2, sub_op, N, setFlags)
+    utilFunc.finalize(rdKey, to_store.zfill(const.REG_SIZE), instr, isSp)
     
 # fetches the operand2 for extended register operations
 def fetchOp2_er(rmVal, shift, option, instr, N):

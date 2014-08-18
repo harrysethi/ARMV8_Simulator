@@ -17,7 +17,7 @@ def execADR(binary):
     (inst_part,offset)=utilFunc.getOffsetWithoutTimes(imm)
     inst+=inst_part+')'
     nextAddr=utilFunc.PCwithOffset(offset)#as our PC implementation is wrong till now
-    utilFunc.setRegValue(regnum, utilFunc.intToBinary(nextAddr, 64))
+    utilFunc.setRegValue(regnum, utilFunc.intToBinary(nextAddr, 64), '0')
     utilFunc.finalize_simple(inst)
 
 def execADRP(binary):
@@ -31,7 +31,7 @@ def execADRP(binary):
     (inst_part,offset)=utilFunc.getOffsetWithoutTimes(imm)
     inst+=inst_part+')'
     nextAddr=utilFunc.PCwithPageOffset(12,offset)#as our PC implementation is wrong till now
-    utilFunc.setRegValue(regnum, utilFunc.intToBinary(nextAddr, 64))
+    utilFunc.setRegValue(regnum, utilFunc.intToBinary(nextAddr, 64), '0')
     utilFunc.finalize_simple(inst)
 
 def execNOP(binary):
