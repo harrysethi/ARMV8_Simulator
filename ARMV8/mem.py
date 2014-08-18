@@ -34,14 +34,10 @@ def printWatchStateAll():
 def isWatchSet(regKey):
     global watchReg
     return watchReg[regKey]
-    pass
-
-def setGlobalDataMemory(startAddress, list):
-    pass
 
 #both are hex strings! wrong!
 #will have to use int for address!!!
-#assume data is 4 bytes here
+#data is 4 bytes here
 def storeWordToMemory(address, data):
     #print 'being called here'
     global memory_model
