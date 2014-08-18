@@ -9,12 +9,24 @@ import parsehelper
 import utilFunc
 import decoder
 import mem
-import utilFunc
+import traceback
 
 DEBUG_MODE=False
 PC = 0
 bkpoint=[]
 hexes=[]
+watchPause=False #
+
+def isWatchPause():
+    return  watchPause
+
+def setWatchPause():
+    global watchPause
+    watchPause=True
+
+def resetWatchPause():
+    global watchPause
+    watchPause=False    
 
 def getHexes():
     global hexes
@@ -26,6 +38,7 @@ def setHexes(list_hex):
     
 def startDebugMode():
     global DEBUG_MODE
+    mem.init()
     DEBUG_MODE=True
     
 def endDebugMode():
@@ -147,15 +160,30 @@ def parseCommand(command):
     print 'Typed: '+command
     
     if command=='s':
-        executeS()
+        try:
+            executeS()
+        except Exception as e:
+            if str(e)=='watch':
+                print 'Watched register value changed. Halting.'
+            else:  print traceback.format_exc()
         return
     
     if command=='run':
-        executeRUN()
+        try:
+            executeRUN()
+        except Exception as e:
+            if str(e)=='watch':
+                print 'Watched register value changed. Halting.'
+            else:  print traceback.format_exc()
         return 
     
     if command=='c':
-        executeC()
+        try:
+            executeC()
+        except Exception as e:
+            if str(e)=='watch':
+                print 'Watched register value changed. Halting.'
+            else:  print traceback.format_exc()
         return
     
     if command.startswith('break'):
@@ -183,7 +211,7 @@ def parseCommand(command):
         return
     
     if command.startswith('watch'):
-        executeWatch(command.split()[1])
+        executeWatch(command)
         return 
     else:
         print 'Not supported input (yet)!'
@@ -201,6 +229,10 @@ def executeNextInst():
         utilFunc.resetInstrFlag()
         decoder.decodeInstr(hexcode)
         incPC()
+        #now the inst has been executed!!!
+        if isWatchPause():
+            resetWatchPause()
+            raise Exception("watch") #copied from stack overflow!!! ;)
     else:
         print 'instructions exhausted!!'
     #print 'PC: '+str(getPC())
@@ -219,11 +251,13 @@ def executeRUN():
 def executeBreak(address): 
     #print 'You typed address: '+address
     #assuming should start with address
+    '''
     if len(address)!=10:
-        print 'Not valid hex address for current state'
+        print 'Not valid hex address for current state.'
         return
-    myhex=re.findall(r'0[x|X][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]', address)
-    print myhex
+    '''
+    myhex=re.findall(r'0[x|X][0-9a-fA-F]+', address)
+    print myhex #here so that we know where the bkpoint has been set
     if myhex:
         #print mylist[0]
         if(checkIfValidBreakPoint(myhex[0])):
@@ -241,13 +275,13 @@ def executeBreak(address):
 def executeDel(address): 
     #print 'You typed address: '+address
     #assuming should start with address
-    
+    '''
     if len(address)!=10:
         print 'Not valid hex address for current state'
         return
-    
-    myhex=re.findall(r'0[x|X][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]', address)
-    print myhex
+    '''
+    myhex=re.findall(r'0[x|X][0-9a-fA-F]+', address)
+    print myhex #here so that we know where the bkpoint has been set
     if myhex:
         #print mylist[0]
         if(checkIfValidBreakPoint(myhex[0])):
@@ -272,9 +306,9 @@ def executeC():
         #print 'X: '+str(x)
         executeNextInst()
         x=getCurrentInstNumber()
-        print 'no breakpoints encountered. instructions exhausted!!'
     if (x==len(getHexes())):
-        return 
+        print 'no breakpoints encountered. instructions exhausted!!'
+        return
     print "Arrived at the break point. Type 's' or 'run'..."
     
 def executePrint(command):
@@ -370,6 +404,12 @@ def executeDebuggerHelp():
     print '------------------------------------'
     print ''
     
-def executeWatch(regInfo):
-    
+def executeWatch(command):
+    try:
+        command=command.split()
+        index=int(command[1])
+        mem.setWatchForReg(index)
+        mem.printWatchStateAll()
+    except:
+        print 'Invalid watch command'
     return

@@ -4,9 +4,10 @@ Created on Aug 8, 2014
 @author: harinder
 '''
 
-regNum=31
+regNum=32
 #31st register is used for SP
-regFile = list('0'*64 for i in range(32))
+regFile = list('0'*64 for i in range(regNum))
+
 #flags-order: n,z,c,v
 flagFile = list('0' for i in range(4))
 
@@ -16,12 +17,29 @@ watchReg = list(False for i in range(regNum))
 
 
 def setWatchForReg(index):
-    del regFile[index]
-    regFile[index]=True
+    global watchReg
+    #print 'before: '+str(len(watchReg))
+    del watchReg[index]
+    watchReg.insert(index, True)
+    #print 'after: '+str(len(watchReg))
     
 def resetWatchForReg(index):
-    del regFile[index]
-    regFile[index]=False    
+    global watchReg
+    del watchReg[index]
+    watchReg.insert(index, False)
+    #print len(watchReg)
+    
+def printWatchStateAll():
+    global watchReg
+    #print watchReg
+    
+#regKey should be the correct index of the register 0 to 31
+#watch on stack pointer too?
+def isWatchSet(regKey):
+    global watchReg
+    #print 'len here: '+str(len(watchReg))
+    return watchReg[regKey]
+    pass
 
 def setGlobalDataMemory(startAddress, list):
     pass
@@ -34,3 +52,16 @@ def storeWordToMemory(address, data):
     
 def printMemoryState():
     print memory_model
+    
+def init():
+    global regFile, flagFile, memory_model, regNum, watchReg
+    regNum=31
+
+    regFile = list('0'*64 for i in range(regNum))
+    #flags-order: n,z,c,v
+    flagFile = list('0' for i in range(4))
+
+    memory_model={}
+
+    watchReg = list(False for i in range(regNum))
+    

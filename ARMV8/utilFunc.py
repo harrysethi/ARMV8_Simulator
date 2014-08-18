@@ -86,10 +86,21 @@ def finalize_simple(instr):
 # val is 64 bit string to be stored in reg with rdkey
 def setRegValue(rdKey, val, isSp):
     assert rdKey >= 0 and rdKey <= 31
-    if(rdKey != 31 or isSp == '1'):
+    #assuming rdkey is being changed, we call a method here which check for the watch method
+    ifWatch(rdKey) #ask about 31 from partner
+        
+    if(rdKey != 31 or isSp == '1'):    
         # ignoring the result - zero register        
         del mem.regFile[rdKey]
         mem.regFile.insert(rdKey, val)
+        
+def ifWatch(rdKey):
+    if mem.isWatchSet(rdKey):
+        mem.resetWatchForReg(rdKey)
+        #set somtehing global here which pauses everything on the planet!
+        #after this inst everything should pause!!
+        armdebug.setWatchPause()
+        #dont forget to reset the watch pause!!
         
 # utility function that takes num int convert it into binary of size N
 def intToBinary(num, N):
@@ -162,7 +173,7 @@ def twosComplement(x, N):
     return addSub('0' * N, x, '1', N, '0')
 
 def binaryToHexStr(x):
-    print 'x '+str(x)
+    #print 'x '+str(x)
     x = str(hex(int(x, 2)))
     if(x[-1] == 'L'):
         x = x[0:len(x) - 1]
