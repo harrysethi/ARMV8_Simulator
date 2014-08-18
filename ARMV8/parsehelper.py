@@ -250,6 +250,79 @@ def return_parsed_text_section(filename):
         finalreturn= arrangeData(toreturn, isLittleEndian(elffile))
         setNumOfInst(len(finalreturn))
         return finalreturn
+    
+def return_parsed_section(filename, secname):
+    with open(filename, 'rb') as f:
+        elffile = ELFFile(f)
+        
+        ll=elffile.iter_sections()
+        
+        #for x in ll:
+        #    print x.name
+            
+        section=elffile.get_section_by_name(str2bytes(secname))
+
+        if section is None:
+            print 'ERROR! Section '+secname+' does not exist in the file!'
+
+        #print 'Name of section is: '+bytes2str(section.name)
+        
+        ##assuming no relocation section for now
+        #self._note_relocs_for_section(section)
+        addr = section['sh_addr']
+        data = section.data()
+        dataptr = 0
+        
+        setStartAddress('  %s ' % _format_hex(addr, elffile, fieldsize=8 ))
+
+        toreturn=[]
+        while dataptr < len(data):
+            bytesleft = len(data) - dataptr
+            # chunks of 16 bytes per line
+            linebytes = 16 if bytesleft > 16 else bytesleft
+
+            #not adding addresses in beginning of 4 * 4 bytes
+            #toreturn+='  %s ' % _format_hex(addr, elffile, fieldsize=8 )
+            for i in range(16):
+                if i < linebytes:
+                    toreturn.append('%2.2x' % byte2int(data[dataptr + i]))
+                else:
+                    pass
+                    #not doing anything
+                    #toreturn+='  '
+                if i % 4 == 3:
+                    pass
+                    #not doing anything  
+                    #toreturn+=' '
+
+            for i in range(linebytes):
+                c = data[dataptr + i : dataptr + i + 1]
+                if byte2int(c[0]) >= 32 and byte2int(c[0]) < 0x7f:
+                    pass
+                    #removing not used info 
+                    #toreturn+=bytes2str(c)
+                else:
+                    pass
+                    #removing not used info
+                    #toreturn+=(bytes2str(b'.'))
+
+            #again not adding string or newline
+            #toreturn+='\n'
+            addr += linebytes
+            dataptr += linebytes
+        #again not adding string or newline
+        #torreeturn+='\n'
+        for x in range(len(toreturn)%4):
+            toreturn.append('')
+        #print toreturn        
+        
+        if toreturn==[]:
+            print'No data to display in '+secname+' section'
+            return
+        
+        finalreturn= arrangeData(toreturn, isLittleEndian(elffile))
+        setNumOfInst(len(finalreturn))
+        return finalreturn
             
 
 def isLittleEndian(elffile):
@@ -304,8 +377,8 @@ def getNumOfBytes():
 #assuming if called from arg line then pass file name as pass a file name from the calling method
 if __name__ == '__main__':
         filename = sys.argv[1]        
-        process3(filename)
-        print return_parsed_text_section(filename)
+        #process3(filename)
+        print return_parsed_section(filename,'.data')
         print getStartAddress()
         print getNumOfInst()
         print getNumOfBytes()

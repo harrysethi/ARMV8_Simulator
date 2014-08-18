@@ -321,3 +321,13 @@ def highestSetBit(x):
             return len(x)-i-1
         i = i+1
     return -1
+
+#defining load and store methods over here
+def loadFromMemory(hextr):
+    #returns data from here
+    pass
+
+
+def storeToMemory(hexstr, data):
+    #stores data here
+    pass
