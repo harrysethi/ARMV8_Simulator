@@ -97,7 +97,9 @@ def ifWatch(rdKey):
     if mem.isWatchSet(rdKey):
         mem.resetWatchForReg(rdKey)
         #set somtehing global here which pauses everything on the planet!
-        
+        #after this inst everything should pause!!
+        armdebug.setWatchPause()
+        #dont forget to reset the watch pause!!
     pass
         
 # utility function that takes num int convert it into binary of size N

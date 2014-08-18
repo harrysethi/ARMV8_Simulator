@@ -9,12 +9,24 @@ import parsehelper
 import utilFunc
 import decoder
 import mem
-import utilFunc
+import traceback
 
 DEBUG_MODE=False
 PC = 0
 bkpoint=[]
 hexes=[]
+watchPause=False #
+
+def isWatchPause():
+    return  watchPause
+
+def setWatchPause():
+    global watchPause
+    watchPause=True
+
+def resetWatchPause():
+    global watchPause
+    watchPause=False    
 
 def getHexes():
     global hexes
@@ -26,6 +38,7 @@ def setHexes(list_hex):
     
 def startDebugMode():
     global DEBUG_MODE
+    mem.init()
     DEBUG_MODE=True
     
 def endDebugMode():
@@ -147,15 +160,30 @@ def parseCommand(command):
     print 'Typed: '+command
     
     if command=='s':
-        executeS()
+        try:
+            executeS()
+        except Exception as e:
+            if str(e)=='watch':
+                print 'Watched register value changed. Halting.'
+            else:  print traceback.format_exc()
         return
     
     if command=='run':
-        executeRUN()
+        try:
+            executeRUN()
+        except Exception as e:
+            if str(e)=='watch':
+                print 'Watched register value changed. Halting.'
+            else:  print traceback.format_exc()
         return 
     
     if command=='c':
-        executeC()
+        try:
+            executeC()
+        except Exception as e:
+            if str(e)=='watch':
+                print 'Watched register value changed. Halting.'
+            else:  print traceback.format_exc()
         return
     
     if command.startswith('break'):
@@ -201,6 +229,10 @@ def executeNextInst():
         utilFunc.resetInstrFlag()
         decoder.decodeInstr(hexcode)
         incPC()
+        #now the inst has been executed!!!
+        if isWatchPause():
+            resetWatchPause()
+            raise Exception("watch") #copied from stack overflow!!! ;)
     else:
         print 'instructions exhausted!!'
     #print 'PC: '+str(getPC())

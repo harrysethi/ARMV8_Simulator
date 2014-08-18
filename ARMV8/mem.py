@@ -6,7 +6,7 @@ Created on Aug 8, 2014
 
 regNum=31
 
-regFile = list('0'*64 for i in range(32))
+regFile = list('0'*64 for i in range(regNum))
 #flags-order: n,z,c,v
 flagFile = list('0' for i in range(4))
 
@@ -16,19 +16,27 @@ watchReg = list(False for i in range(regNum))
 
 
 def setWatchForReg(index):
+    global watchReg
+    #print 'before: '+str(len(watchReg))
     del watchReg[index]
-    watchReg[index]=True
+    watchReg.insert(index, True)
+    #print 'after: '+str(len(watchReg))
     
 def resetWatchForReg(index):
+    global watchReg
     del watchReg[index]
-    watchReg[index]=False
+    watchReg.insert(index, False)
+    #print len(watchReg)
     
 def printWatchStateAll():
-    print watchReg
+    global watchReg
+    #print watchReg
     
 #regKey should be the correct index of the register 0 to 31
 #watch on stack pointer too?
 def isWatchSet(regKey):
+    global watchReg
+    #print 'len here: '+str(len(watchReg))
     return watchReg[regKey]
     pass
 
@@ -43,4 +51,16 @@ def storeWordToMemory(address, data):
     
 def printMemoryState():
     print memory_model
+    
+def init():
+    global regFile, flagFile, memory_model, regNum, watchReg
+    regNum=31
+
+    regFile = list('0'*64 for i in range(regNum))
+    #flags-order: n,z,c,v
+    flagFile = list('0' for i in range(4))
+
+    memory_model={}
+
+    watchReg = list(False for i in range(regNum))
     
