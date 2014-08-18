@@ -80,7 +80,6 @@ def getInstFromValidHexString(givenHexString): #starts at index 0
     givenHexInt=int(givenHexString, 16)
     startAddInt=int(startAdd, 16)
     return int((givenHexInt-startAddInt)/4)
-    pass
    
 
 def initBkPoint():

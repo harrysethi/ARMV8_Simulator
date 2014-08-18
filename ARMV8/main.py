@@ -13,6 +13,7 @@ import armdebug
 from armdebug import isDebugMode, executeRegs, executeFlag
 from utilFunc import resetInstrFlag
 import sys
+import global_data
 
     
 if __name__ == '__main__':
@@ -44,7 +45,9 @@ if __name__ == '__main__':
             sys.exit(0)
             
         try:
-            hexes=parsehelper.return_parsed_text_section(filename)
+            #here we first check for global data
+            global_data.parseDataSection(filename)
+            hexes=parsehelper.return_parsed_section(filename,'.text')
         except:
             print "He's dead Larry." 
             print "The inputfile seems to be a not compatibe ARMv8 elf."

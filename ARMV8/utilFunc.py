@@ -290,3 +290,15 @@ def getOffsetWithoutTimes(immkey):
         offset=int(immkey, 2)
     inst+=str(int(immkey, 2))
     return (inst, offset)
+
+
+#defining load and store methods over here
+def loadFromMemory(hextr):
+    #returns data from here
+    pass
+
+
+def storeToMemory(hexstr, data):
+    #stores data here
+    pass
+
