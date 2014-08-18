@@ -25,8 +25,8 @@ def op_i(binary, N, instr, sub_op, setFlags):
         imm12 = (imm12 + '0' * 12).zfill(N)
         instr = instr + " #12"
         
-    to_store, isSp = utilFunc.addSub(rdKey, rnVal, imm12, sub_op, N, setFlags).zfill(const.REG_SIZE)    
-    utilFunc.finalize(rdKey, to_store, instr, isSp)
+    to_store, isSp = utilFunc.addSub(rdKey, rnVal, imm12, sub_op, N, setFlags)    
+    utilFunc.finalize(rdKey, to_store.zfill(const.REG_SIZE), instr, isSp)
 
 def execAdd_i32(binary):
     op_i(binary, 32, "ADD", '0', '0')
@@ -86,8 +86,8 @@ def op_sr(binary, N, instr, sub_op, setFlags):
     instr += " " + r + str(rdKey) + ", " + r + str(rnKey) + ", " + r + str(rmkey) + ", "
     op2, instr = fetchOp2_sr(rmVal, shiftType, imm6Val, instr)
     instr += " #" + str(imm6Val)
-    to_store,isSp = utilFunc.addSub(rdKey, rnVal, op2, sub_op, N, setFlags).zfill(const.REG_SIZE) #isSp ignored
-    utilFunc.finalize(rdKey, to_store, instr, '0')
+    to_store,isSp = utilFunc.addSub(rdKey, rnVal, op2, sub_op, N, setFlags) #isSp ignored
+    utilFunc.finalize(rdKey, to_store.zfill(const.REG_SIZE), instr, '0')
 
 def execAdd_sr32(binary):
     op_sr(binary, 32, "ADD", '0', '0')
@@ -133,8 +133,8 @@ def op_er(binary, N, instr, sub_op, setFlags):
     instr += " " + r + str(rdKey) + ", " + r + str(rnKey) + ", " + r + str(rmkey) + ", "
     op2, instr = fetchOp2_er(rmVal, shift, option, instr, N)
     instr += " #" + str(shift)
-    to_store, isSp = utilFunc.addSub(rdKey, rnVal, op2, sub_op, N, setFlags).zfill(const.REG_SIZE)
-    utilFunc.finalize(rdKey, to_store, instr, isSp)
+    to_store, isSp = utilFunc.addSub(rdKey, rnVal, op2, sub_op, N, setFlags)
+    utilFunc.finalize(rdKey, to_store.zfill(const.REG_SIZE), instr, isSp)
     
 # fetches the operand2 for extended register operations
 def fetchOp2_er(rmVal, shift, option, instr, N):

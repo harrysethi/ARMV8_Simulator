@@ -8,7 +8,7 @@ from utilFunc import resetInstrFlag, printAllRegs, printAllFlags
 
 def main():
     print "---Started---"
-    hexes = ["910003e2"]
+    hexes = ["d2800141","0b0103ff"]
 
     for hexcode in hexes:
         resetInstrFlag()

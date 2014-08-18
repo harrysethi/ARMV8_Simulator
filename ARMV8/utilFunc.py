@@ -224,7 +224,7 @@ def printAllRegs():
     for x in mem.regFile:
         print 'R'+str(i).zfill(2) + ": " + x
         i = i + 1
-    print 'R31: denotes SP'
+    print '<--\'R31\' denotes SP-->'
 
 # usage give a binary of length <=N
 # sign extends it and returns the resulting binary
