@@ -38,7 +38,6 @@ def setHexes(list_hex):
     
 def startDebugMode():
     global DEBUG_MODE
-    mem.init()
     DEBUG_MODE=True
     
 def endDebugMode():
@@ -413,3 +412,14 @@ def executeWatch(command):
     except:
         print 'Invalid watch command'
     return
+
+def saveAllToMemoryModel():
+    global hexes
+    #print 'saveeeee : '+str(hexes)
+    curAddrInt=int(parsehelper.getStartAddress(),16)
+    for x in hexes:
+        #x has the data
+        mem.storeWordToMemory(hex(curAddrInt), x)
+        curAddrInt+=4
+    #print 'memmmm: '
+    mem.printMemoryState()

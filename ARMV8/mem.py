@@ -46,6 +46,7 @@ def setGlobalDataMemory(startAddress, list):
 #both are hex strings 
 #assume data is 4 bytes here
 def storeWordToMemory(address, data):
+    #print 'being called here'
     global memory_model
     memory_model[address]=data
     

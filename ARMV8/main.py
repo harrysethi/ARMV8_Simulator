@@ -14,7 +14,8 @@ from armdebug import isDebugMode, executeRegs, executeFlag
 from utilFunc import resetInstrFlag
 import sys
 import global_data
-
+import traceback
+import mem
     
 if __name__ == '__main__':
     
@@ -48,14 +49,19 @@ if __name__ == '__main__':
             #here we first check for global data
             global_data.parseDataSection(filename)
             hexes=parsehelper.return_parsed_section(filename,'.text')
+            #and now tell the parsehelper to save the inst to memory!!!
+            #mem.init()
+            
             #print hexes
         except:
+            print traceback.format_exc()
             print "He's dead Larry." 
             print "The inputfile seems to be a not compatibe ARMv8 elf."
             sys.exit(0)
         
         if isDebugMode():
             armdebug.setHexes(hexes)
+            armdebug.saveAllToMemoryModel()
             armdebug.startInteraction()
         else:        
             for hexcode in hexes:

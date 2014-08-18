@@ -17,6 +17,7 @@ from elftools.elf.descriptions import (
     )
 from elftools.common.py3compat import (
         ifilter, byte2int, bytes2str, itervalues, str2bytes)
+import mem
 
 addReturn=''
 numOfInst=0
@@ -374,6 +375,7 @@ def setNumOfInst(num):
     
 def getNumOfBytes():
     return getNumOfInst()*4
+
 
 #assuming if called from arg line then pass file name as pass a file name from the calling method
 if __name__ == '__main__':
