@@ -357,17 +357,6 @@ def highestSetBit(x):
         i = i+1
     return -1
 
-#defining load and store methods over here
-def loadFromMemory(hextr):
-    #returns data from here
-    pass
-
-
-def storeToMemory(hexstr, data):
-    #stores data here
-    pass
-
-
 def extendReg(rmVal, shift, option, instr, N):
     assert shift >= 0 and shift <= 4
     if(option == "000"):
@@ -412,3 +401,35 @@ def extendReg(rmVal, shift, option, instr, N):
         len = 64
     len = min(len, N - shift)
     return utilFunc.extend(rmVal[N - 1 - (len - 1):N] + '0' * shift, N, unsigned), instr
+
+def fetch32bitDataFromMem(address):
+    hexData = mem.fetchWordFromMemory(address)
+    return hexToBin(hexData)
+
+def fetch64bitDataFromMem(address):
+    rightData = fetch32bitDataFromMem(address)
+    leftData = fetch32bitDataFromMem(address+4)
+    return leftData + rightData
+
+def fetchFromMemory(address, dataSize):
+     if(dataSize == 32):
+            data = fetch32bitDataFromMem(address)
+     if(dataSize == 64):
+            data = fetch64bitDataFromMem(address)
+
+def store32bitDataToMem(data, address):
+    data = binaryToHexStr(data)    
+    mem.storeWordToMemory(address, data)
+    
+def store64bitDataToMem(data, address):
+    rightData = data[32:64]
+    leftData = data[0:31]
+    store32bitDataToMem(address, rightData)
+    store32bitDataToMem(address+4, leftData)
+    
+def storeToMemory(data, address, dataSize):
+    if(dataSize == 32):
+            data = data[32:64]
+            utilFunc.store32bitDataToMem(data, address)
+    if(dataSize == 64):
+            utilFunc.store64bitDataToMem(data, address)

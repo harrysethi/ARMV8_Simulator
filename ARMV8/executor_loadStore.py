@@ -20,18 +20,18 @@ def helper_l(binary):
         size = 4
         signed = true
         
-    offset = utilFunc.signExtend(imm19+'00',64)
+    offset = utilFunc.signExtend(imm19 + '00', 64)
+    offset = utilFunc.sInt(offset, 64)
         
     address = armdebug.getPC() + offset
-    #Data size : size*8
+    dataSize = size * 8
     
     if(memOp == 'Load'):
-        #data = mem.
-        '''write function-------------------------------------'''
+       data = utilFunc.fetchFromMemory(address, dataSize)        
     
     if(signed):
-        data = utilFunc.signExtend(data,64)
-    utilFunc.setRegValue(rtKey,data, '0')
+        data = utilFunc.signExtend(data, 64)
+    utilFunc.setRegValue(rtKey, data.zfill(64), '0')
     
 
 #---Load Register (Literal)---
@@ -44,48 +44,173 @@ def execLDR_l64(binary):
 def execLDRSW_l(binary):
     helper_l(binary)
     
+ 
+
+def helper_rp_posti(binary):
+    wback = true
+    postIndex= true
+    
+def helper_rp_prei(binary):
+    wback = true
+    postIndex= false
+    
+def helper_rp_offset(binary): 
+    wback = false
+    postIndex= false
     
 #---Load/Store Register-Pair (Post-Indexed)---    
 def execSTP_rp_posti_32(binary):
-    '''Not implemented yet'''
+    helper_rp_posti(binary)
     
 def execLDP_rp_posti_32(binary):
-    '''Not implemented yet'''
+    helper_rp_posti(binary)
     
 def execSTP_rp_posti_64(binary):
-    '''Not implemented yet'''
+    helper_rp_posti(binary)
     
 def execLDP_rp_posti_64(binary):
-    '''Not implemented yet'''
-    
-    
+    helper_rp_posti(binary)
+     
 #---Load/Store Register-Pair (Post-Indexed)---    
 def execSTP_rp_prei_32(binary):
-    '''Not implemented yet'''
+    helper_rp_prei(binary)
     
 def execLDP_rp_prei_32(binary):
-    '''Not implemented yet'''
+    helper_rp_prei(binary)
     
 def execSTP_rp_prei_64(binary):
-    '''Not implemented yet'''
+    helper_rp_prei(binary)
     
 def execLDP_rp_prei_64(binary):
-    '''Not implemented yet'''
+    helper_rp_prei(binary)
 
 
 #---Load/Store Register-Pair (Post-Indexed)---    
 def execSTP_rp_offset_32(binary):
-    '''Not implemented yet'''
+    helper_rp_offset(binary)
     
 def execLDP_rp_offset_32(binary):
-    '''Not implemented yet'''
+    helper_rp_offset(binary)
     
 def execSTP_rp_offset_64(binary):
-    '''Not implemented yet'''
+    helper_rp_offset(binary)
     
 def execLDP_rp_offset_64(binary):
-    '''Not implemented yet'''
+    helper_rp_offset(binary)
 
+
+    
+#---Load/Store Register (Post-Indexed Immediate)---    
+def execSTR_reg_posti_32(binary):
+    helper_reg_posti(binary)
+    
+def execLDR_reg_posti_32(binary):
+    helper_reg_posti(binary)
+    
+def execLDRSW_reg_posti(binary):
+    helper_reg_posti(binary)
+    
+def execSTR_reg_posti_64(binary):
+    helper_reg_posti(binary)
+
+def execLDR_reg_posti_64(binary):
+    helper_reg_posti(binary)
+
+
+#---Load/Store Register (Pre-Indexed Immediate)---    
+def execSTR_reg_prei_32(binary):
+    helper_reg_prei(binary)
+    
+def execLDR_reg_prei_32(binary):
+    helper_reg_prei(binary)
+    
+def execLDRSW_reg_prei(binary):
+    helper_reg_prei(binary)
+    
+def execSTR_reg_prei_64(binary):
+    helper_reg_prei(binary)
+
+def execLDR_reg_prei_64(binary):
+    helper_reg_prei(binary)
+
+
+#---Load/Store Register (Unsigned Offset)---    
+def execSTR_reg_unsignedOffset_32(binary):
+    helper_reg_unsignedOffset(binary)
+    
+def execLDR_reg_unsignedOffset_32(binary):
+    helper_reg_unsignedOffset(binary)
+    
+def execLDRSW_reg_unsignedOffset(binary):
+    helper_reg_unsignedOffset(binary)
+    
+def execSTR_reg_unsignedOffset_64(binary):
+    helper_reg_unsignedOffset(binary)
+
+def execLDR_reg_unsignedOffset_64(binary):
+    helper_reg_unsignedOffset(binary)
+
+
+
+#---Load/Store Register (Register offset)---    
+def execSTR_reg_offset_32(binary):
+    helper_reg(binary)
+    
+def execLDR_reg_offset_32(binary):
+    helper_reg(binary)
+    
+def execLDRSW_reg_offset(binary):
+    helper_reg(binary)
+    
+def execSTR_reg_offset_64(binary):
+    helper_reg(binary)
+
+def execLDR_reg_offset_64(binary):
+    helper_reg(binary)
+    
+
+    
+def helper_reg_posti(binary):
+    instr = ''
+    rtKey = utilFunc.getRegKeyByStringKey(binary[27:32])
+    rnKey = utilFunc.getRegKeyByStringKey(binary[22:27])
+    imm9 = binary[11:20]
+    opc = binary[8:10]
+    size = binary[0:2]
+    wback = true
+    postIndex = true
+    scale = utilFunc.uInt(size)
+    offset = utilFunc.signExtend(imm9, 64)
+    offset = utilFunc.sInt(offset, 64)
+    helper_all(opc, size, wback, postIndex, offset, rtKey, rnKey, scale, instr)
+
+def helper_reg_prei(binary):
+    instr = ''
+    rtKey = utilFunc.getRegKeyByStringKey(binary[27:32])
+    rnKey = utilFunc.getRegKeyByStringKey(binary[22:27])
+    imm9 = binary[11:20]
+    opc = binary[8:10]
+    size = binary[0:2]
+    wback = true
+    postIndex = false
+    scale = utilFunc.uInt(size)
+    offset = utilFunc.signExtend(imm9, 64)
+    offset = utilFunc.sInt(offset, 64)
+    helper_all(opc, size, wback, postIndex, offset, rtKey, rnKey, scale, instr)
+
+def helper_reg_unsignedOffset(binary):
+    instr = ''
+    rtKey = utilFunc.getRegKeyByStringKey(binary[27:32])
+    rnKey = utilFunc.getRegKeyByStringKey(binary[22:27])
+    imm12 = binary[10:22]
+    opc = binary[8:10]
+    size = binary[0:2]
+    wback = false
+    postIndex = false
+    scale = utilFunc.uInt(size)
+    offset = utilFunc.lsl(utilFunc.zeroExtend(imm12, 64), scale)
+    offset = utilFunc.sInt(offset, 64)
+    helper_all(opc, size, wback, postIndex, offset, rtKey, rnKey, scale, instr)
 
 def helper_reg(binary):
     instr = ''
@@ -96,22 +221,28 @@ def helper_reg(binary):
     rnVal = utilFunc.getRegValueByStringkey(binary[22:27], '1')
     rmVal = utilFunc.getRegValueByStringkey(binary[11:16], '0')
     s = binary[19]
-    option = binary[16,19]
-    opc = binary[8,10]
+    option = binary[16:19]
+    opc = binary[8:10]
+    size = binary[0:2]
     
     wback = false
     postIndex = false
     scale = utilFunc.uInt(size)
-    if s=='1':
+    if s == '1':
         shift = scale
     else:
         shift = 0
         
+    offset, instr = utilFunc.extendReg(rmVal, shift, option, instr, 64)    
+    helper_all(opc, size, wback, postIndex, offset, rtKey, rnKey, scale, instr)    
+
+    
+def helper_all(opc, size, wback, postIndex, offset, rtKey, rnKey, scale, instr):
     if(opc[0] == '0'):
         if(opc[1] == '1'):
-            memOp = 'Load'
+            memOp = const.MEM_OP_LOAD
         else:
-            memOp = 'Store'
+            memOp = const.MEM_OP_STORE
         if(size == '11'):
             regSize = 64
         else:
@@ -119,9 +250,9 @@ def helper_reg(binary):
         signed = false
     else:
         if(size == '11'):
-            memOp = 'Prefetch'
+            memOp = const.MEM_OP_PREFETCH
         else:
-            memOp = 'Load'
+            memOp = const.MEM_OP_LOAD
             if opc[1] == '1':
                 regSize = 32
             else:
@@ -130,175 +261,29 @@ def helper_reg(binary):
             
     dataSize = 8 << scale
     
-    offset, instr = utilFunc.extendReg(rmVal, shift, option, instr, 64)
-    #wb_unknown = false
-    #rt_unknown = false
+    '''wb_unknown = false
+    rt_unknown = false'''  # commenting - assuming them to be false always 
     
     address = utilFunc.getRegValueByStringkey(rnKey, '1')
+    address = utilFunc.uInt(address, 64)
     if not(postindex):
         address = address + offset
         
-    if(memOp == 'Store'):
+    if(memOp == const.MEM_OP_STORE):
         data = utilFunc.getRegValueByStringkey(rtKey, '0')
-        mem.storeWordToMemory(address, data)
-    elif(memOP == 'Load'):
-        #data =
-        '''--------------------to be implemented...calling a function----------------'''
-        if(signed):
-            utilFunc.setRegValue(rtKey, utilFunc.signExtend(data,regSize),'0')
-        else:
-            utilFunc.setRegValue(rtKey, utilFunc.zeroExtend(data,regSize),'0')
-    
-    if(wback):
-        if postIndex:
-            address = address + offset
-        utilFunc.setRegValue(rnKey, address,'1')
-    
-def helper_imm():
-    if(opc[0] == '0'):
-        if(opc[1] == '1'):
-            memOp = 'Load'
-        else:
-            memOp = 'Store'
-        if(size == '11'):
-            regSize = 64
-        else:
-            regSize = 32
-        signed = false
-    else:
-        if(size == '11'):
-            memOp = 'Prefetch'
-        else:
-            memOp = 'Load'
-            if opc[1] == '1':
-                regSize = 32
-            else:
-                regSize = 64
-            signed = true
+        storeToMemory(data, address, dataSize)
             
-    dataSize = 8 << scale
-    
-    ###offset, instr = utilFunc.extendReg(rmVal, shift, option, instr, 64)  ---> not used
-    #wb_unknown = false
-    #rt_unknown = false
-    
-    address = utilFunc.getRegValueByStringkey(rnKey, '1')
-    if not(postindex):
-        address = address + offset
-        
-    if(memOp == 'Store'):
-        data = utilFunc.getRegValueByStringkey(rtKey, '0')
-        mem.storeWordToMemory(address, data)
-    elif(memOP == 'Load'):
-        #data =
-        '''--------------------to be implemented...calling a function----------------'''
+    elif(memOP == const.MEM_OP_LOAD):
+        data = utilFunc.fetchFromMemory(address, dataSize)        
         if(signed):
-            utilFunc.setRegValue(rtKey, utilFunc.signExtend(data,regSize),'0')
+            data = utilFunc.signExtend(data, regSize)
         else:
-            utilFunc.setRegValue(rtKey, utilFunc.zeroExtend(data,regSize),'0')
-    
+            data = utilFunc.zeroExtend(data, regSize)
+            
+    utilFunc.setRegValue(rtKey, data.zfill(64), '0')
+        
     if(wback):
         if postIndex:
             address = address + offset
-        utilFunc.setRegValue(rnKey, address,'1')
-    
-#---Load/Store Register (Post-Indexed Immediate)---    
-def execSTR_reg_posti_32(binary):
-    instr = ''
-    rtKey = utilFunc.getRegKeyByStringKey(binary[27:32])
-    rnKey = utilFunc.getRegKeyByStringKey(binary[22:27])
-    
-    rnVal = utilFunc.getRegValueByStringkey(binary[22:27], '1')
-    imm9 = binary[11,20]
-    opc = binary[8,10]
-    
-    
-    wback = true
-    postIndex = true
-    scale = utilFunc.uInt(size)
-    offset = utilFunc.signExtend(imm9,64)
-    
-def execLDR_reg_posti_32(binary):
-    '''Not implemented yet'''
-    
-def execLDRSW_reg_posti(binary):
-    '''Not implemented yet'''
-    
-def execSTR_reg_posti_64(binary):
-    '''Not implemented yet'''
-
-def execLDR_reg_posti_64(binary):
-    '''Not implemented yet'''
-
-
-#---Load/Store Register (Pre-Indexed Immediate)---    
-def execSTR_reg_prei_32(binary):
-    instr = ''
-    rtKey = utilFunc.getRegKeyByStringKey(binary[27:32])
-    rnKey = utilFunc.getRegKeyByStringKey(binary[22:27])
-    
-    rnVal = utilFunc.getRegValueByStringkey(binary[22:27], '1')
-    imm9 = binary[11,20]
-    opc = binary[8,10]
-    
-    wback = true
-    postIndex = false
-    scale = utilFunc.uInt(size)
-    offset = utilFunc.signExtend(imm9,64)
-    
-def execLDR_reg_prei_32(binary):
-    '''Not implemented yet'''
-    
-def execLDRSW_reg_prei(binary):
-    '''Not implemented yet'''
-    
-def execSTR_reg_prei_64(binary):
-    '''Not implemented yet'''
-
-def execLDR_reg_prei_64(binary):
-    '''Not implemented yet'''
-    
-
-#---Load/Store Register (Register offset)---    
-def execSTR_reg_offset_32(binary):
-    instr = ''
-    rtKey = utilFunc.getRegKeyByStringKey(binary[27:32])
-    rnKey = utilFunc.getRegKeyByStringKey(binary[22:27])
-    
-    rnVal = utilFunc.getRegValueByStringkey(binary[22:27], '1')
-    imm12 = binary[10,22]
-    opc = binary[8,10]
-    
-    wback = false
-    postIndex = false
-    scale = utilFunc.uInt(size)
-    offset = utilFunc.lsl(utilFunc.zeroExtend(imm12,64),scale)
-    
-def execLDR_reg_offset_32(binary):
-    pass
-    
-def execLDRSW_reg_offset(binary):
-    '''Not implemented yet'''
-    
-def execSTR_reg_offset_64(binary):
-    '''Not implemented yet'''
-
-def execLDR_reg_offset_64(binary):
-    '''Not implemented yet'''
-    
-
-#---Load/Store Register (Unsigned Immediate)---    
-def execSTR_reg_unsignedi_32(binary):
-    '''Not implemented yet'''
-    
-def execLDR_reg_unsignedi_32(binary):
-    '''Not implemented yet'''
-    
-def execLDRSW_reg_unsignedi(binary):
-    '''Not implemented yet'''
-    
-def execSTR_reg_unsignedi_64(binary):
-    '''Not implemented yet'''
-
-def execLDR_reg_unsignedi_64(binary):
-    '''Not implemented yet'''
+            address = utilFunc.intToBinary(address, 64)
+        utilFunc.setRegValue(rnKey, address, '1')
