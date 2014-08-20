@@ -45,7 +45,7 @@ def parseDataSection(filename):
     global hexes
     hexes=parsehelper.return_parsed_section(filename, '.data')
     if hexes:
-        print 'yes data section exists!!'
+        print 'Data section exists'
         setStartAddress(parsehelper.getStartAddress())
         setNumOfData(parsehelper.getNumOfInst())
         #print hexes

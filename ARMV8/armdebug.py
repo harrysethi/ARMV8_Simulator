@@ -509,8 +509,7 @@ def saveAllToMemoryModel():
         #x has the data
         mem.storeWordToMemory(curAddrInt, x)
         curAddrInt+=4
-    #print 'memmmm: '
-    mem.printMemoryState()
+    #mem.printMemoryState()
     
 #claimed is a string
 def hexHelperForPrint(claimed):
