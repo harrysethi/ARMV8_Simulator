@@ -10,6 +10,7 @@ import utilFunc
 import decoder
 import mem
 import traceback
+from ccm.Utils import PrettyButton
 
 DEBUG_MODE=False
 PC = 0
@@ -426,15 +427,20 @@ def printMemEngine(command):
     
     #print ''
     #print listOfHex
-    print '<'+command[3]+'>'+' : ',
+    #print '<'+command[3]+'>'+' : \t\t',
     
+    pretty=0
     for i in listOfHex:
+        if (pretty%4==0):
+            print ''
+            print '<'+command[3]+'>'+' + '+str((pretty*numOfBits)/8)+' : \t\t',
         if base=='x':
-            print '0x'+i,
+            print '0x'+i+'\t\t',
         elif base=='d':
             binary=utilFunc.hexToBin('0x'+i, numOfBits)
-            print utilFunc.sInt(binary, numOfBits),
+            print str(utilFunc.sInt(binary, numOfBits))+'\t\t',
         print ' ',
+        pretty=pretty+1
     print ''
     
 
