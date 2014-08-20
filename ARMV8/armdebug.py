@@ -137,11 +137,12 @@ def isBkPointHex(givenHexString): #assume the hex is within limits and right alw
 def startInteraction():
     flag = True
     initBkPoint()
-    setPC(int(parsehelper.getStartAddress(),16))
+    setPC(parsehelper.getPC())
     #print getPC()
     #print getCurrentInstNumber()
     print '------------------------------------'
-    print 'The starting address is: ' + parsehelper.getStartAddress()
+    print 'The entry address for execution is: ' + hex(parsehelper.getPC())
+    print 'The starting address of .text section is: ' + parsehelper.getStartAddress()
     print "Debug mode started. Type 'help' for list of options."
     while flag:
         print '------------------------------------'

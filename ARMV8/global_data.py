@@ -50,8 +50,6 @@ def parseDataSection(filename):
         #print hexes
         #print getStartAddress()
         saveAllToMemoryModel()
-    else:
-        print 'no data section exists'
     
 def checkIfValidDataAddress(givenHexString):
     startAdd=getStartAddress()

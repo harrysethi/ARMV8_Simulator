@@ -21,6 +21,15 @@ from elftools.common.py3compat import (
 addReturn=''
 numOfInst=0
 little=False
+PC=''
+
+def getPC():
+    global PC
+    return PC
+
+def setPC(prog_counter):
+    global PC
+    PC=prog_counter
 
 def isLittle():
     global little
@@ -255,7 +264,27 @@ def return_parsed_text_section(filename):
         finalreturn= arrangeData(toreturn, isLittleEndian(elffile))
         setNumOfInst(len(finalreturn))
         return finalreturn
-    
+
+def fetch_PC(filename, secname='.symtab'):
+    toreturn=0
+    with open(filename, 'rb') as f:
+        elffile = ELFFile(f)
+        
+        section=elffile.get_section_by_name(str2bytes(secname))
+        #print section['sh_entsize']
+        if section['sh_entsize'] == 0:
+                print("\nSymbol table '%s' has a sh_entsize of zero!" % (
+                    bytes2str(section.name)))
+                
+        print("Symbol table '%s' contains %s entries" % (
+                bytes2str(section.name), section.num_symbols()))
+        
+        for nsym, symbol in enumerate(section.iter_symbols()):
+            if(bytes2str(symbol.name)=='_start'):
+                toreturn = symbol['st_value']
+                 
+    setPC(toreturn)
+            
 def return_parsed_section(filename, secname):
     with open(filename, 'rb') as f:
         elffile = ELFFile(f)
@@ -278,8 +307,9 @@ def return_parsed_section(filename, secname):
         data = section.data()
         dataptr = 0
         
-        setStartAddress('  %s ' % _format_hex(addr, elffile, fieldsize=8 ))
-
+        
+        setStartAddress('  %s ' % _format_hex(addr, elffile, fieldsize=8 ))        
+                    
         toreturn=[]
         while dataptr < len(data):
             bytesleft = len(data) - dataptr
@@ -386,7 +416,9 @@ def getNumOfBytes():
 if __name__ == '__main__':
         filename = sys.argv[1]        
         #process3(filename)
-        print return_parsed_section(filename,'.text')
-        print getStartAddress()
-        print getNumOfInst()
-        print getNumOfBytes()
+        fetch_PC(filename,'.symtab')
+        print getPC()
+                 
+        #print getStartAddress()
+        #print getNumOfInst()
+        #print getNumOfBytes()
