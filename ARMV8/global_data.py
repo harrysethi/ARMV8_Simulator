@@ -44,11 +44,14 @@ def parseDataSection(filename):
     global hexes
     hexes=parsehelper.return_parsed_section(filename, '.data')
     if hexes:
+        print 'yes data section exists!!'
         setStartAddress(parsehelper.getStartAddress())
         setNumOfData(parsehelper.getNumOfInst())
         #print hexes
         #print getStartAddress()
         saveAllToMemoryModel()
+    else:
+        print 'no data section exists'
     
 def checkIfValidDataAddress(givenHexString):
     startAdd=getStartAddress()

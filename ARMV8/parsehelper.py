@@ -17,10 +17,14 @@ from elftools.elf.descriptions import (
     )
 from elftools.common.py3compat import (
         ifilter, byte2int, bytes2str, itervalues, str2bytes)
-import mem
 
 addReturn=''
 numOfInst=0
+little=False
+
+def isLittle():
+    global little
+    return little
 
 def process_file(filename):
     with open(filename, 'rb') as f:
@@ -320,7 +324,8 @@ def return_parsed_section(filename, secname):
         if toreturn==[]:
             print'No data to display in '+secname+' section'
             return
-        
+        global little
+        little=isLittleEndian(elffile)
         finalreturn= arrangeData(toreturn, isLittleEndian(elffile))
         setNumOfInst(len(finalreturn))
         #print finalreturn

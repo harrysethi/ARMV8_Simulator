@@ -144,7 +144,7 @@ def startInteraction():
     print "Debug mode started. Type 'help' for list of options."
     while flag:
         print '------------------------------------'
-        print 'Type debug commnand here : ',
+        print '(debug) : ',
         x=raw_input()
         x=x.strip().lower()
         if x=='exit':
@@ -316,6 +316,7 @@ def executePrint(command):
     if(len(command)==3):
         executePrintReg(command)
     elif(len(command)==4):
+        executePrintMem(command)#giving the splitted string
         pass
     else:
         print 'Invalid print command'
@@ -365,6 +366,79 @@ def executePrintReg(command): #list of strings in command
         else:
             print 'register value: ' + utilFunc.binaryToHexStr(binary)
             
+def executePrintMem(command):
+    base=command[2]
+    address=command[3]
+    freq=command[1]
+    if base!='d' and base!='x':
+        print 'Invalid print-from-memory command'
+        return
+    if not hexHelperForPrint(address):
+        print 'Invalid print-from-memory command'
+        return
+    if not freqHelperForPrint(freq):
+        print 'Invalid print-from-memory command'
+        return
+    #print 'all pass!!!'
+    
+    printMemEngine(command)
+    
+def printMemEngine(command):
+    
+    base=command[2] # x or d
+    address=command[3]
+    freq=command[1]
+    listOfHex=''
+    
+    address=int(address,16)
+    
+    #assume to be in hex
+    freqcount=int(freq[0:-1])
+    freqtype=freq[-1] # b w or d
+    numOfBits=''
+    if freqtype=='w':
+        for i in range(freqcount):
+            data=mem.fetchWordFromMemory(address+(4*i))
+            if data=='trap':
+                print 'Memory location could not be accessed'
+                return
+            listOfHex+=data+' '
+            numOfBits=32
+    elif freqtype=='d':
+        for i in range(0,freqcount):
+            data1=mem.fetchWordFromMemory(address+(8*i))
+            data2=mem.fetchWordFromMemory(address+(8*i)+4)
+            if data1=='trap' or data2=='trap':
+                print 'Memory location could not be accessed'
+                return
+            listOfHex+=data2+''+data1+' '
+            numOfBits=64
+    elif freqtype=='b':
+        for i in range(0,freqcount):
+            data=mem.fetchByteFromHelperMemory(address+i)
+            if data=='trap':
+                print 'Memory location could not be accessed'
+                return
+            listOfHex+=data+' '
+            numOfBits=8
+    
+    listOfHex=listOfHex.split()
+    
+    #print ''
+    #print listOfHex
+    print '<'+command[3]+'>'+' : ',
+    
+    for i in listOfHex:
+        if base=='x':
+            print '0x'+i,
+        elif base=='d':
+            binary=utilFunc.hexToBin('0x'+i, numOfBits)
+            print utilFunc.sInt(binary, numOfBits),
+        print ' ',
+    print ''
+    
+
+    
             
 def executeFlag():
     utilFunc.printAllFlags()
@@ -423,3 +497,24 @@ def saveAllToMemoryModel():
         curAddrInt+=4
     #print 'memmmm: '
     mem.printMemoryState()
+    
+#claimed is a string
+def hexHelperForPrint(claimed):
+    myhex=re.findall(r'0[x|X][0-9a-f]+', claimed)
+    if myhex:
+        if len(myhex[0])==len(claimed):
+            return True
+        else:
+            return False
+    else:
+        return False
+    
+def freqHelperForPrint(claimed):
+    myhex=re.findall(r'[[1-9][0-9]*[bwd]', claimed)
+    if myhex:
+        if len(myhex[0])==len(claimed):
+            return True
+        else:
+            return False
+    else:
+        return False

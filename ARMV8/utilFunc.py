@@ -5,9 +5,9 @@ import const
 import mem
 import armdebug
 
-def hexToBin(s):
-    scale = 16  # # equals to hexadecimal    
-    binary = bin(int(s, scale))[2:].zfill(const.INST_SIZE)
+def hexToBin(s, numOfBits=const.INST_SIZE):
+    scale = 16  # # equals to hexadecimal 
+    binary = bin(int(s, scale))[2:].zfill(numOfBits)
     return binary
 
 def lsl(s, i):
