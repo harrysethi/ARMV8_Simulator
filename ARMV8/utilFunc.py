@@ -365,3 +365,49 @@ def loadFromMemory(hextr):
 def storeToMemory(hexstr, data):
     #stores data here
     pass
+
+
+def extendReg(rmVal, shift, option, instr, N):
+    assert shift >= 0 and shift <= 4
+    if(option == "000"):
+        # ExtendType_UXTB
+        instr += 'UXTB'
+        unsigned = 1
+        len = 8
+    elif (option == "001"):
+        # ExtendType_UXTH
+        instr += 'UXTH'
+        unsigned = 1
+        len = 16
+    elif (option == "010"):
+        # ExtendType_UXTW
+        instr += 'UXTW'
+        unsigned = 1
+        len = 32
+    elif (option == "011"):
+        # ExtendType_UXTX
+        instr += 'UXTX'
+        unsigned = 1
+        len = 64
+    elif (option == "100"):
+        # ExtendType_SXTB
+        instr += 'SXTB'
+        unsigned = 0
+        len = 8
+    elif (option == "101"):
+        # ExtendType_SXTH
+        instr += 'SXTH'
+        unsigned = 0
+        len = 16
+    elif (option == "110"):
+        # ExtendType_SXTW
+        instr += 'SXTW'
+        unsigned = 0
+        len = 32
+    elif (option == "111"):
+        # ExtendType_SXTX
+        instr += 'SXTX'
+        unsigned = 0
+        len = 64
+    len = min(len, N - shift)
+    return utilFunc.extend(rmVal[N - 1 - (len - 1):N] + '0' * shift, N, unsigned), instr
