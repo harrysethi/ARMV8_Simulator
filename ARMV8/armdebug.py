@@ -356,22 +356,22 @@ def executePrintReg(command): #list of strings in command
         binary=mem.regFile[regnum]
         if regbase == 'd':            
             if binary[0]=='0':
-                print 'register value:' + str(int(binary,2))
+                print 'Register value: ' + str(int(binary,2))
             else:
                 neg_binary=utilFunc.twosComplement(binary, 64)
-                print 'register value: -' + str(int(neg_binary,2))
+                print 'Register value: -' + str(int(neg_binary,2))
         else:
-            print 'register value: ' + utilFunc.binaryToHexStr(binary)
+            print 'Register value: ' + utilFunc.binaryToHexStr(binary)
     elif regtype == 'w':
         binary=mem.regFile[regnum][32:64]
         if regbase == 'd':            
             if binary[0]=='0':
-                print 'register value:' + str(int(binary,2))
+                print 'Register value: ' + str(int(binary,2))
             else:
                 neg_binary=utilFunc.twosComplement(binary, 32)
-                print 'register value: -' + str(int(neg_binary,2))
+                print 'Register value: -' + str(int(neg_binary,2))
         else:
-            print 'register value: ' + utilFunc.binaryToHexStr(binary)
+            print 'Register value: ' + utilFunc.binaryToHexStr(binary)
             
 def executePrintMem(command):
     base=command[2]
