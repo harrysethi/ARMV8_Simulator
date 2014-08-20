@@ -35,4 +35,4 @@ def execADRP(binary):
     utilFunc.finalize_simple(inst)
 
 def execNOP(binary):
-    print "NOP"
+    utilFunc.finalize_simple("NOP")
