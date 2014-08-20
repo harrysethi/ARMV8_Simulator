@@ -47,16 +47,68 @@ def execLDRSW_l(binary):
  
 
 def helper_rp_posti(binary):
-    wback = true
-    postIndex= true
+    instr = ''
+    helper_rp(true, true, binary, instr)
     
 def helper_rp_prei(binary):
-    wback = true
-    postIndex= false
+    instr = ''
+    helper_rp(true, false, binary, instr)
     
-def helper_rp_offset(binary): 
-    wback = false
-    postIndex= false
+def helper_rp_offset(binary):
+    instr = '' 
+    helper_rp(false, false, binary, instr)
+    
+def helper_rp(wback, postIndex, binary, instr):
+     rtKey = utilFunc.getRegKeyByStringKey(binary[27:32])
+     rnKey = utilFunc.getRegKeyByStringKey(binary[22:27])
+     rt2Key = utilFunc.getRegKeyByStringKey(binary[17:22])
+     
+     imm7 = binary[10:17]
+     l = binary[9]     
+     opc = binary[0:2]
+     
+     if(l == '1'):
+         memOp = const.MEM_OP_LOAD
+     else:
+         memOp = const.MEM_OP_STORE
+
+     signed = (opc[1] != '0')
+     scale = 2 + utilFunc.uInt(opc[0])
+     
+     dataSize = 8 << scale
+     offset = utilFunc.lsl(utilFunc.signExtend(imm7, 64), scale)
+     
+     dbytes = datasize/8;
+     
+     address = utilFunc.getRegValueByStringkey(rnKey, '1')
+     address = utilFunc.uInt(address, 64)
+     
+     if not(postindex):
+        address = address + offset
+     
+     if(memOp == const.MEM_OP_STORE):
+        data1 = utilFunc.getRegValueByStringkey(rtKey, '0')
+        data2 = utilFunc.getRegValueByStringkey(rt2Key, '0')  
+        storeToMemory(data1, address, dataSize)
+        storeToMemory(data2, address+dbytes, dataSize)
+             
+     elif(memOP == const.MEM_OP_LOAD):
+        data1 = utilFunc.fetchFromMemory(address, dataSize)
+        data2 = utilFunc.fetchFromMemory(address+dbytes, dataSize) 
+        if(signed):
+            data1 = utilFunc.signExtend(data1, 64)
+            data2 = utilFunc.signExtend(data2, 64)
+            
+        utilFunc.setRegValue(rtKey, data1.zfill(64), '0')
+        utilFunc.setRegValue(rt2Key, data2.zfill(64), '0')
+     
+     if(wback):       
+         if postIndex:
+            address = address + offset
+            address = utilFunc.intToBinary(address, 64)
+         utilFunc.setRegValue(rnKey, address, '1')
+
+    
     
 #---Load/Store Register-Pair (Post-Indexed)---    
 def execSTP_rp_posti_32(binary):
