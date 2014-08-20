@@ -10,6 +10,7 @@ import utilFunc
 import decoder
 import mem, const
 import traceback
+import const
 
 DEBUG_MODE=False
 PC = 0
@@ -133,14 +134,20 @@ def isBkPointHex(givenHexString): #assume the hex is within limits and right alw
     index=getInstFromValidHexString(givenHexString)
     return isBkPoint(index)
     
+def startRunEngine():
+    initBkPoint()
+    setPC(parsehelper.getPC())
+    executeRUN()
+
 def startInteraction():
     flag = True
     initBkPoint()
-    setPC(int(parsehelper.getStartAddress(),16))
+    setPC(parsehelper.getPC())
     #print getPC()
     #print getCurrentInstNumber()
     print '------------------------------------'
-    print 'The starting address is: ' + parsehelper.getStartAddress()
+    print 'The entry address for execution is: ' + hex(parsehelper.getPC())
+    print 'The starting address of .text section is: ' + parsehelper.getStartAddress()
     print "Debug mode started. Type 'help' for list of options."
     while flag:
         print '------------------------------------'
@@ -456,30 +463,32 @@ def executeRegs():
     
 def printMainHelp():
     print ''
-    print '--------------------------------------------------------------------------------------------------------'
+    print '------------------------------------'
     print 'Syntax: python <PATH-TO PROJECT>/main.py [--help,--debug] [filename]'
+    print ''
     print 'Options: '
     print '1. --help : Prints this output. '
     print '2. --debug filename: Starts debugger for elf file with title filename'
     print '3. filename: Should be the relative/absolute path of the elf file directed towards ARMv8 architecture'
-    print '--------------------------------------------------------------------------------------------------------'
+    print '------------------------------------'
     print ''
     
 def executeDebuggerHelp():
     print ''
-    print '------------------------------------'
     print 'Debug Options List: '
-    print '1. help : Prints this output. '
-    print '2. s : Runs next instruction and halt'
-    print '3. c : Runs all instructions, but halts at next breakpoint'
-    print '4. run : Runs all instructions till last and halt'
-    print '5. break <ADDRESS> : Puts a breakpoint at the hexadecimal <ADDRESS>'
-    print '6. del <ADDRESS> : Deletes the breakpoint at the hexadecimal <ADDRESS>'
-    print '7. flags: Print the state of all flags'
-    print '8. regs: Print the state of all registers in hex(64 binary digits)'
-    print '9. print <d/x> <w/x>num: prints the decimal/hexadecimal equivalent of register(32bit/64bit) number num'
-    print '10. exit: Exits the program(with the debugger)'
-    print '------------------------------------'
+    print ''
+    print '1.  help : Prints this output. '
+    print '2.  s : Runs next instruction and halt'
+    print '3.  c : Runs all instructions, but halts at next breakpoint'
+    print '4.  run : Runs all instructions till last and halt'
+    print '5.  break <ADDRESS> : Puts a breakpoint at the hexadecimal <ADDRESS>'
+    print '6.  del <ADDRESS> : Deletes the breakpoint at the hexadecimal <ADDRESS>'
+    print '7.  flags: Print the state of all flags'
+    print '8.  regs: Print the state of all registers in hex(64 binary digits)'
+    print '9.  print <d/x> <w/x>num: prints the decimal/hexadecimal equivalent of register(32bit/64bit) number num'
+    print '10. print num<b/d/w> <d/x> 0x<hex-address> : prints the num(count) bytes, words, or doublewords starting from hexaddress in decimal/hexadecimal'
+    print "11. watch num: stops executing as soon as register num's value is changed"
+    print '12. exit: Exits the program(with the debugger)'
     print ''
     
 def executeWatch(command):

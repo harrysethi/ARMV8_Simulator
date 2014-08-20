@@ -55,7 +55,7 @@ def storeWordToHelperMemory(address,data):
     list=[data[0:2],data[2:4],data[4:6],data[6:8]]
     if parsehelper.isLittle():
         list.reverse()
-    print list
+    #print list
     #now each data is 2 hexit
     helper_memory_model[address]=list[0]
     helper_memory_model[address+1]=list[1]

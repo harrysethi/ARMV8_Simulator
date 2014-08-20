@@ -49,33 +49,22 @@ if __name__ == '__main__':
             #here we first check for global data
             global_data.parseDataSection(filename)
             hexes=parsehelper.return_parsed_section(filename,'.text')
-            #and now tell the parsehelper to save the inst to memory!!!
-            #mem.init()
+            parsehelper.fetch_PC(filename)
             
-            #print hexes
         except:
             print traceback.format_exc()
             print "He's dead Larry." 
             print "The inputfile seems to be a not compatibe ARMv8 elf."
             sys.exit(0)
         
+        
+        armdebug.setHexes(hexes)
+        armdebug.saveAllToMemoryModel()
         if isDebugMode():
-            armdebug.setHexes(hexes)
-            armdebug.saveAllToMemoryModel()
             armdebug.startInteraction()
         else:        
-            for hexcode in hexes:
-                resetInstrFlag()
-                decoder.decodeInstr(hexcode)             
+            armdebug.startRunEngine()
+            print ''             
             executeRegs()
+            print ''
             executeFlag()
-        
-'''            
-def main():
-    print "Inside Main"
-    hexCode = "0a020020"   
-    decoder.decodeInstr(hexCode) 
-    printAllRegs()
-    printAllFlags()
-        
-#main()'''

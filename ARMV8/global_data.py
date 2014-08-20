@@ -6,6 +6,7 @@ Created on Aug 18, 2014
 
 import parsehelper
 import mem
+import const
 
 startAdd=''
 numOfData=0
@@ -50,8 +51,6 @@ def parseDataSection(filename):
         #print hexes
         #print getStartAddress()
         saveAllToMemoryModel()
-    else:
-        print 'no data section exists'
     
 def checkIfValidDataAddress(givenHexString):
     startAdd=getStartAddress()
