@@ -5,6 +5,7 @@ Created on Aug 8, 2014
 '''
 import const
 import utilFunc
+import armdebug
 
 def helper_l(binary, instr):
     rtKey = utilFunc.getRegKeyByStringKey(binary[27:32])
@@ -45,7 +46,7 @@ def execLDR_l32(binary):
     helper_l(binary, 'LDR w')
 
 def execLDR_l64(binary):
-    helper_l(binary, 'LDR w')
+    helper_l(binary, 'LDR x')
     
 def execLDRSW_l(binary):
     helper_l(binary, 'LDRSW x')
