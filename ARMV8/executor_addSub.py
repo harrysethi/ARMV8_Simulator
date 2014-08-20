@@ -130,7 +130,12 @@ def op_er(binary, N, instr, sub_op, setFlags):
         r = 'w'
     elif(N == 64):
         r = 'x'
-    instr += " " + r + str(rdKey) + ", " + r + str(rnKey) + ", " + r + str(rmkey) + ", "
+        if(option[1:3] == '11'):
+            rmToPrint = 'x'
+        else:
+            rmToPrint = 'w'
+            rmVal = rmVal[32:64]
+    instr += " " + r + str(rdKey) + ", " + r + str(rnKey) + ", " + rmToPrint + str(rmkey) + ", "
     op2, instr = utilFunc.extendReg(rmVal, shift, option, instr, N)
     instr += " #" + str(shift)
     to_store, isSp = utilFunc.addSub(rdKey, rnVal, op2, sub_op, N, setFlags)

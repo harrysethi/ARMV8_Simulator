@@ -77,7 +77,7 @@ def loadWordFromData(givenHexString, wordlength):
         if wordlength==1 :  return hexes[num]
         elif num+1<getNumOfData(): return hexes[num]+hexes[num+1]#just concatenating hexstrings will have to do conversion
     else:
-        return 'trap'
+        return const.TRAP
 
 def saveAllToMemoryModel():
     global hexes

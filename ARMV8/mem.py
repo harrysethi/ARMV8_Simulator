@@ -3,7 +3,7 @@ Created on Aug 8, 2014
 
 @author: harinder
 '''
-import parsehelper
+import parsehelper, const
 
 regNum=32
 #31st register is used for SP
@@ -67,7 +67,7 @@ def fetchByteFromHelperMemory(address):
     try:
         return helper_memory_model[address]
     except KeyError:
-        return 'trap'
+        return const.TRAP
     
 #give an int equivalent of address
 #will fetch only a word
@@ -76,7 +76,7 @@ def fetchWordFromMemory(address):
     try:
         return memory_model[address]
     except KeyError:
-        return 'trap'
+        return const.TRAP
     
 def printMemoryState():
     global memory_model
