@@ -18,7 +18,7 @@ def INSTRUCTION_TYPE(binary,i):
     except KeyError:
         i=i
 
-    
+
 def LOAD_REGISTER_LITERAL(binary):
     key = binary[0:8]
     return {       

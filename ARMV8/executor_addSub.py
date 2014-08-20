@@ -134,7 +134,6 @@ def op_er(binary, N, instr, sub_op, setFlags):
             rmToPrint = 'x'
         else:
             rmToPrint = 'w'
-            rmVal = rmVal[32:64]
     instr += " " + r + str(rdKey) + ", " + r + str(rnKey) + ", " + rmToPrint + str(rmkey) + ", "
     op2, instr = utilFunc.extendReg(rmVal, shift, option, instr, N)
     instr += " #" + str(shift)

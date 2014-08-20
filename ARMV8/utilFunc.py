@@ -400,17 +400,19 @@ def extendReg(rmVal, shift, option, instr, N):
         unsigned = 0
         len = 64
     len = min(len, N - shift)
-    return utilFunc.extend(rmVal[N - 1 - (len - 1):N] + '0' * shift, N, unsigned), instr
+    return extend(rmVal[N - 1 - (len - 1):N] + '0' * shift, N, unsigned), instr
 
 def fetch32bitDataFromMem(address):
     hexData = mem.fetchWordFromMemory(address)
     if(hexData == const.TRAP):
-        return hexData
+        return const.TRAP
     return hexToBin(hexData)
 
 def fetch64bitDataFromMem(address):
-    rightData = fetch32bitDataFromMem(address)
+    rightData = fetch32bitDataFromMem(address)    
     leftData = fetch32bitDataFromMem(address+4)
+    if(rightData == const.TRAP or leftData == const.TRAP):
+        return const.TRAP
     return leftData + rightData
 
 def fetchFromMemory(address, dataSize):
@@ -420,12 +422,12 @@ def fetchFromMemory(address, dataSize):
             data = fetch64bitDataFromMem(address)
      return data
 
-def store32bitDataToMem(data, address):
+def store32bitDataToMem(address, data):
     data = binaryToHexStr(data)
     data = (data[2:len(data)]).zfill(8)
     mem.storeWordToMemory(address, data)
     
-def store64bitDataToMem(data, address):
+def store64bitDataToMem(address, data):
     rightData = data[32:64]
     leftData = data[0:31]
     store32bitDataToMem(address, rightData)
@@ -434,6 +436,6 @@ def store64bitDataToMem(data, address):
 def storeToMemory(data, address, dataSize):
     if(dataSize == 32):
             data = data[32:64]
-            store32bitDataToMem(data, address)
+            store32bitDataToMem(address, data)
     if(dataSize == 64):
-            store64bitDataToMem(data, address)
+            store64bitDataToMem(address, data)

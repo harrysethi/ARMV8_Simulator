@@ -22,7 +22,7 @@ def helper_l(binary, instr):
         
     offset = utilFunc.signExtend(imm19 + '00', 64)
     offset = utilFunc.sInt(offset, 64)
-        
+    
     address = armdebug.getPC() + offset
     dataSize = size * 8
     
@@ -80,14 +80,32 @@ def helper_rp(wback, postIndex, binary, instr):
      
      dataSize = 8 << scale
      offset = utilFunc.lsl(utilFunc.signExtend(imm7, 64), scale)
+     offset = utilFunc.sInt(offset, 64)
      
-     dbytes = datasize / 8;
+     dbytes = dataSize / 8;
      
      address = utilFunc.getRegValueByStringkey(binary[22:27], '1')
-     address = utilFunc.uInt(address, 64)
+     address = utilFunc.uInt(address)
      
      if not(postIndex):
         address = address + offset
+     
+     type = binary[7:9]
+     if(opc == '00'):
+         r = 'w'
+     if(opc == '10'):
+         r = 'x'
+            
+     if(type == '01'):
+         #Post-index
+         instr += " " + r + str(rtKey) +", " + r + str(rt2Key) + ", [x" + str(rnKey) + "], #" + str(offset) 
+     if(type == '11'):
+         #Pre-index
+         instr += " " + r + str(rtKey) +", " + r + str(rt2Key) + ", [x" + str(rnKey) + ", #" + str(offset) + "]!"   
+     if(type == '10'):
+         #Signed-offset
+         instr += " " + r + str(rtKey) +", " + r + str(rt2Key) + ", [x" + str(rnKey) + ", #" + str(offset) + "]"
+     
      
      if(memOp == const.MEM_OP_STORE):
         data1 = utilFunc.getRegValueByStringkey(binary[27:32], '0')
@@ -115,24 +133,9 @@ def helper_rp(wback, postIndex, binary, instr):
      if(wback):       
          if postIndex:
             address = address + offset
-            address = utilFunc.intToBinary(address, 64)
+         address = utilFunc.intToBinary(address, 64)            
          utilFunc.setRegValue(rnKey, address, '1')
     
-     type = binary[7:9]
-     if(opc == '00'):
-         r = 'w'
-     if(opc == '10'):
-         r = 'x'
-            
-     if(type == 01):
-         #Post-index
-         instr += " " + r + str(rtKey) +", " + r + str(rt2Key) + ", [x" + str(rnKey) + "], #" + str(offset) 
-     if(type == 11):
-         #Pre-index
-         instr += " " + r + str(rtKey) +", " + r + str(rt2Key) + ", [x" + str(rnKey) + ", #" + str(offset) + "]!"   
-     if(type == 10):
-         #Signed-offset
-         instr += " " + r + str(rtKey) +", " + r + str(rt2Key) + ", [x" + str(rnKey) + ", #" + str(offset) + "]"
      utilFunc.finalize_simple(instr)
     
     
@@ -312,13 +315,12 @@ def helper_reg(binary, instr):
     
     if(option[1:3] == '10'):
         rmToPrint = 'w'
-        rmVal = rmVal[32:64]
     elif(option[1:3] == '11'):
         rmToPrint = 'x'
         
     instr += str(rtKey) + ", [x" + str(rnKey) + ", " + rmToPrint + str(rmKey) + ", "     
     offset, instr = utilFunc.extendReg(rmVal, shift, option, instr, 64)
-    
+    offset = utilFunc.sInt(offset, 64)
     instr += ' #'
     if size == '10':
         if s == '0':
@@ -389,7 +391,7 @@ def helper_all(binary, opc, size, wback, postIndex, offset, rtKey, rnKey, scale,
     if(wback):
         if postIndex:
             address = address + offset
-            address = utilFunc.intToBinary(address, 64)
+        address = utilFunc.intToBinary(address, 64)
         utilFunc.setRegValue(rnKey, address, '1')
     
     utilFunc.finalize_simple(instr)

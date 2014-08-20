@@ -8,7 +8,7 @@ import re
 import parsehelper
 import utilFunc
 import decoder
-import mem
+import mem, const
 import traceback
 
 DEBUG_MODE=False
