@@ -323,7 +323,7 @@ def return_parsed_section(filename, secname):
         
         finalreturn= arrangeData(toreturn, isLittleEndian(elffile))
         setNumOfInst(len(finalreturn))
-        print finalreturn
+        #print finalreturn
         return finalreturn
             
 
