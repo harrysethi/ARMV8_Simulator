@@ -475,19 +475,20 @@ def printMainHelp():
     
 def executeDebuggerHelp():
     print ''
-    print '------------------------------------'
     print 'Debug Options List: '
-    print '1. help : Prints this output. '
-    print '2. s : Runs next instruction and halt'
-    print '3. c : Runs all instructions, but halts at next breakpoint'
-    print '4. run : Runs all instructions till last and halt'
-    print '5. break <ADDRESS> : Puts a breakpoint at the hexadecimal <ADDRESS>'
-    print '6. del <ADDRESS> : Deletes the breakpoint at the hexadecimal <ADDRESS>'
-    print '7. flags: Print the state of all flags'
-    print '8. regs: Print the state of all registers in hex(64 binary digits)'
-    print '9. print <d/x> <w/x>num: prints the decimal/hexadecimal equivalent of register(32bit/64bit) number num'
-    print '10. exit: Exits the program(with the debugger)'
-    print '------------------------------------'
+    print ''
+    print '1.  help : Prints this output. '
+    print '2.  s : Runs next instruction and halt'
+    print '3.  c : Runs all instructions, but halts at next breakpoint'
+    print '4.  run : Runs all instructions till last and halt'
+    print '5.  break <ADDRESS> : Puts a breakpoint at the hexadecimal <ADDRESS>'
+    print '6.  del <ADDRESS> : Deletes the breakpoint at the hexadecimal <ADDRESS>'
+    print '7.  flags: Print the state of all flags'
+    print '8.  regs: Print the state of all registers in hex(64 binary digits)'
+    print '9.  print <d/x> <w/x>num: prints the decimal/hexadecimal equivalent of register(32bit/64bit) number num'
+    print '10. print num<b/d/w> <d/x> 0x<hex-address> : prints the num(count) bytes, words, or doublewords starting from hexaddress in decimal/hexadecimal'
+    print "11. watch num: stops executing as soon as register num's value is changed"
+    print '12. exit: Exits the program(with the debugger)'
     print ''
     
 def executeWatch(command):

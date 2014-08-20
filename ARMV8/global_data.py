@@ -6,6 +6,7 @@ Created on Aug 18, 2014
 
 import parsehelper
 import mem
+import const
 
 startAdd=''
 numOfData=0
