@@ -1,0 +1,9 @@
+1. Run make.sh from inside this directory. Very important.
+2. For help options inside ARMV8 directory, run "python main.py --help" and take help from help.
+3. For running machine code in elf file, run as 'python main.py <filename>'
+4. For running debugger run as 'python main.py --debug <filename>'
+5. When inside debugger, type help for debugger options.
+6. The instructions we have simulated are : ADD, ADDS, ADR, ADRP, ASR, AND, B.{cond}, B, BR, BL, BLR, CBNZ, CBZ, CMP, LDP, LDR, LDRSW, LSL, LSR, NOP,
+                                            MOV, RET, STP, STR, SUB, SUBS.
+7. You can also find the code on: https://github.com/harrysethi/ARMV8_Simulator/
+8. Happy simulating. :)

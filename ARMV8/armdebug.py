@@ -463,13 +463,14 @@ def executeRegs():
     
 def printMainHelp():
     print ''
-    print '--------------------------------------------------------------------------------------------------------'
+    print '------------------------------------'
     print 'Syntax: python <PATH-TO PROJECT>/main.py [--help,--debug] [filename]'
+    print ''
     print 'Options: '
     print '1. --help : Prints this output. '
     print '2. --debug filename: Starts debugger for elf file with title filename'
     print '3. filename: Should be the relative/absolute path of the elf file directed towards ARMv8 architecture'
-    print '--------------------------------------------------------------------------------------------------------'
+    print '------------------------------------'
     print ''
     
 def executeDebuggerHelp():

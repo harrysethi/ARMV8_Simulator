@@ -50,10 +50,7 @@ if __name__ == '__main__':
             global_data.parseDataSection(filename)
             hexes=parsehelper.return_parsed_section(filename,'.text')
             parsehelper.fetch_PC(filename)
-            #and now tell the parsehelper to save the inst to memory!!!
-            #mem.init()
             
-            #print hexes
         except:
             print traceback.format_exc()
             print "He's dead Larry." 
@@ -71,13 +68,3 @@ if __name__ == '__main__':
             executeRegs()
             print ''
             executeFlag()
-        
-'''            
-def main():
-    print "Inside Main"
-    hexCode = "0a020020"   
-    decoder.decodeInstr(hexCode) 
-    printAllRegs()
-    printAllFlags()
-        
-#main()'''
