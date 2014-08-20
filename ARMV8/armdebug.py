@@ -399,7 +399,7 @@ def printMemEngine(command):
     if freqtype=='w':
         for i in range(freqcount):
             data=mem.fetchWordFromMemory(address+(4*i))
-            if data=='trap':
+            if data==const.TRAP:
                 print 'Memory location could not be accessed'
                 return
             listOfHex+=data+' '
@@ -408,7 +408,7 @@ def printMemEngine(command):
         for i in range(0,freqcount):
             data1=mem.fetchWordFromMemory(address+(8*i))
             data2=mem.fetchWordFromMemory(address+(8*i)+4)
-            if data1=='trap' or data2=='trap':
+            if data1==const.TRAP or data2==const.TRAP:
                 print 'Memory location could not be accessed'
                 return
             listOfHex+=data2+''+data1+' '
@@ -416,7 +416,7 @@ def printMemEngine(command):
     elif freqtype=='b':
         for i in range(0,freqcount):
             data=mem.fetchByteFromHelperMemory(address+i)
-            if data=='trap':
+            if data==const.TRAP:
                 print 'Memory location could not be accessed'
                 return
             listOfHex+=data+' '

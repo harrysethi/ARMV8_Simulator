@@ -12,3 +12,5 @@ FLAG_INST_EXECUTED = "-1"
 MEM_OP_LOAD = "Load"
 MEM_OP_STORE = "Store"
 MEM_OP_PREFETCH = "Prefetch"
+
+TRAP = 'Trap'

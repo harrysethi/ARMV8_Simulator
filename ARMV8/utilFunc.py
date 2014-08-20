@@ -404,6 +404,8 @@ def extendReg(rmVal, shift, option, instr, N):
 
 def fetch32bitDataFromMem(address):
     hexData = mem.fetchWordFromMemory(address)
+    if(hexData == const.TRAP):
+        return hexData
     return hexToBin(hexData)
 
 def fetch64bitDataFromMem(address):
@@ -414,12 +416,13 @@ def fetch64bitDataFromMem(address):
 def fetchFromMemory(address, dataSize):
      if(dataSize == 32):
             data = fetch32bitDataFromMem(address)
-     if(dataSize == 64):
+     elif(dataSize == 64):
             data = fetch64bitDataFromMem(address)
+     return data
 
 def store32bitDataToMem(data, address):
     data = binaryToHexStr(data)
-    data = data[2:len(data)]    
+    data = (data[2:len(data)]).zfill(8)
     mem.storeWordToMemory(address, data)
     
 def store64bitDataToMem(data, address):
@@ -431,6 +434,6 @@ def store64bitDataToMem(data, address):
 def storeToMemory(data, address, dataSize):
     if(dataSize == 32):
             data = data[32:64]
-            utilFunc.store32bitDataToMem(data, address)
+            store32bitDataToMem(data, address)
     if(dataSize == 64):
-            utilFunc.store64bitDataToMem(data, address)
+            store64bitDataToMem(data, address)
