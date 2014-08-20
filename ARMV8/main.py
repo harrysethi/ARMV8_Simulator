@@ -66,9 +66,7 @@ if __name__ == '__main__':
         if isDebugMode():
             armdebug.startInteraction()
         else:        
-            for hexcode in hexes:
-                resetInstrFlag()
-                decoder.decodeInstr(hexcode)
+            armdebug.startRunEngine()
             print ''             
             executeRegs()
             print ''

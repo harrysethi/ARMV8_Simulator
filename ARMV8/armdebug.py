@@ -10,6 +10,7 @@ import utilFunc
 import decoder
 import mem
 import traceback
+import const
 
 DEBUG_MODE=False
 PC = 0
@@ -133,6 +134,11 @@ def isBkPointHex(givenHexString): #assume the hex is within limits and right alw
     index=getInstFromValidHexString(givenHexString)
     return isBkPoint(index)
     
+def startRunEngine():
+    initBkPoint()
+    setPC(parsehelper.getPC())
+    executeRUN()
+
 def startInteraction():
     flag = True
     initBkPoint()
