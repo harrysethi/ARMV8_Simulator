@@ -6,4 +6,4 @@
 6. The instructions we have simulated are : ADD, ADDS, ADR, ADRP, ASR, AND, B.{cond}, B, BR, BL, BLR, CBNZ, CBZ, CMP, LDP, LDR, LDRSW, LSL, LSR, NOP,
                                             MOV, RET, STP, STR, SUB, SUBS.
 7. You can also find the code on: https://github.com/harrysethi/ARMV8_Simulator/
-8. Happy simulating. :)
+8. Happy ARMV8 simulation. :)
