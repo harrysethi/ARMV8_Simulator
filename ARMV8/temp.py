@@ -1,1 +1,4 @@
-print 2==0
+i = True
+
+if i:
+    print 'a'

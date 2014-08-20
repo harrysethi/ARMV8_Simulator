@@ -10,7 +10,7 @@ def helper_l(binary, instr):
     rtKey = utilFunc.getRegKeyByStringKey(binary[27:32])
     imm19 = binary[8:27]
     opc = binary[0:2]
-    signed = false
+    signed = False
     
     if(opc == '00'):
         size = 4
@@ -18,7 +18,7 @@ def helper_l(binary, instr):
         size = 8
     elif(opc == '10'):
         size = 4
-        signed = true
+        signed = True
         
     offset = utilFunc.signExtend(imm19 + '00', 64)
     offset = utilFunc.sInt(offset, 64)
@@ -47,13 +47,13 @@ def execLDRSW_l(binary):
  
 
 def helper_rp_posti(binary, instr):
-    helper_rp(true, true, binary, instr)
+    helper_rp(True, True, binary, instr)
     
 def helper_rp_prei(binary, instr):
-    helper_rp(true, false, binary, instr)
+    helper_rp(True, False, binary, instr)
     
 def helper_rp_offset(binary, instr):
-    helper_rp(false, false, binary, instr)
+    helper_rp(False, False, binary, instr)
     
 def helper_rp(wback, postIndex, binary, instr):
      rtKey = utilFunc.getRegKeyByStringKey(binary[27:32])
@@ -241,8 +241,8 @@ def helper_reg_posti(binary, instr):
     imm9 = binary[11:20]
     opc = binary[8:10]
     size = binary[0:2]
-    wback = true
-    postIndex = true
+    wback = True
+    postIndex = True
     scale = utilFunc.uInt(size)
     offset = utilFunc.signExtend(imm9, 64)
     offset = utilFunc.sInt(offset, 64)
@@ -255,8 +255,8 @@ def helper_reg_prei(binary, instr):
     imm9 = binary[11:20]
     opc = binary[8:10]
     size = binary[0:2]
-    wback = true
-    postIndex = false
+    wback = True
+    postIndex = False
     scale = utilFunc.uInt(size)
     offset = utilFunc.signExtend(imm9, 64)
     offset = utilFunc.sInt(offset, 64)
@@ -269,8 +269,8 @@ def helper_reg_unsignedOffset(binary, instr):
     imm12 = binary[10:22]
     opc = binary[8:10]
     size = binary[0:2]
-    wback = false
-    postIndex = false
+    wback = False
+    postIndex = False
     scale = utilFunc.uInt(size)
     offset = utilFunc.lsl(utilFunc.zeroExtend(imm12, 64), scale)
     offset = utilFunc.sInt(offset, 64)
@@ -289,8 +289,8 @@ def helper_reg(binary, instr):
     opc = binary[8:10]
     size = binary[0:2]
     
-    wback = false
-    postIndex = false
+    wback = False
+    postIndex = False
     scale = utilFunc.uInt(size)
     if s == '1':
         shift = scale
@@ -333,7 +333,7 @@ def helper_all(opc, size, wback, postIndex, offset, rtKey, rnKey, scale, instr):
             regSize = 64
         else:
             regSize = 32
-        signed = false
+        signed = False
     else:
         if(size == '11'):
             memOp = const.MEM_OP_PREFETCH
@@ -343,12 +343,12 @@ def helper_all(opc, size, wback, postIndex, offset, rtKey, rnKey, scale, instr):
                 regSize = 32
             else:
                 regSize = 64
-            signed = true
+            signed = True
             
     dataSize = 8 << scale
     
-    '''wb_unknown = false
-    rt_unknown = false'''  # commenting - assuming them to be false always 
+    '''wb_unknown = False
+    rt_unknown = False'''  # commenting - assuming them to be false always 
     
     address = utilFunc.getRegValueByStringkey(rnKey, '1')
     address = utilFunc.uInt(address, 64)

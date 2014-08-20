@@ -10,7 +10,6 @@ import utilFunc
 import decoder
 import mem
 import traceback
-from ccm.Utils import PrettyButton
 
 DEBUG_MODE=False
 PC = 0
