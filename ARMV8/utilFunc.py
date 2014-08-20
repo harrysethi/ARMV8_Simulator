@@ -418,7 +418,8 @@ def fetchFromMemory(address, dataSize):
             data = fetch64bitDataFromMem(address)
 
 def store32bitDataToMem(data, address):
-    data = binaryToHexStr(data)    
+    data = binaryToHexStr(data)
+    data = data[2:len(data)]    
     mem.storeWordToMemory(address, data)
     
 def store64bitDataToMem(data, address):
