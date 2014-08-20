@@ -1,6 +1,4 @@
 '''
-Created on Aug 8, 2014
-
 @author: harinder
 '''
 
@@ -27,8 +25,11 @@ def decodeInstr(hexCode):
             if(const.FLAG_INST_EXECUTED=="1"):
                 break
     
-    if(const.FLAG_INST_EXECUTED=="0"):        
-        for i in range(11):        
+    if(const.FLAG_INST_EXECUTED=="0"):
+        for i in range(11):  
             dicts.INSTRUCTION_TYPE(binary, i)
             if(const.FLAG_INST_EXECUTED=="1"):
                 break
+            
+    if(const.FLAG_INST_EXECUTED=="0"):
+        print 'Sorry!!! :( Instruction with hexCode: ' + hexCode + ' is incorrect or not supported'
