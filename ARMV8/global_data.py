@@ -42,6 +42,7 @@ def hasDataInData():
     return hexes==None or hexes==[]
 
 def parseDataSection(filename):
+    #return
     global hexes
     hexes=parsehelper.return_parsed_section(filename, '.data')
     if hexes:
