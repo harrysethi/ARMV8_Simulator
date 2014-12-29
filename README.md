@@ -2,13 +2,15 @@ ARMV8_Simulator
 ===============
 
 ARMv8 instruction set simulator:
+
 Given an ELF format binary for the ARM architecture, ARMV8_Simulator simulates it. The simulator parses the ELF format binary, extracts
 the instructions (along with other information), decodes them and take actions accordingly. It keeps track of the state of the memory and all the registers.
 
-ARMV8_Simulator is integrated with a tiny debugger.
+ARMV8_Simulator is also integrated with a tiny debugger.
 
 Some more points:
-1. Run make.sh from inside this directory. Very important.
+
+1. Run make.sh from inside this directory. Very important. 
 2. For help options inside ARMV8 directory, run "python main.py --help" and take help from help.
 3. For running machine code in elf file, run as 'python main.py <filename>'
 4. For running debugger run as 'python main.py --debug <filename>'
